@@ -97,7 +97,7 @@ class _MyHomepageState extends State<MyHomePage> {
                                 ElevatedButton(
                                   onPressed: () => setState(
                                     () {
-                                      operation += " - ";
+                                      operation += "-";
                                     },
                                   ),
                                   child: Text("-", style: mytxt2),
@@ -261,7 +261,13 @@ class _MyHomepageState extends State<MyHomePage> {
                           child: ElevatedButton(
                             onPressed: () {
                               setState(() {
-                                operation += " \n= ${doCalculation(operation)}";
+                                operation += "=";
+                                String temp = doCalculation(operation);
+                                operation = operation.replaceAll("=", '');
+                                // List<String> t;
+                                // t = operation.split("=");
+                                // operation = t[0];
+                                operation += "\n= $temp";
                               });
                             },
                             child: Text("=", style: mytxt2),
@@ -285,36 +291,97 @@ class _MyHomepageState extends State<MyHomePage> {
   }
 }
 
-String doCalculation(String s) {
-  String ans = '';
-  String a = "", b = "", operator = "";
+String doCalculation(String str) {
+  var ans;
+  var list = [];
+  var operators = []; // new List.empty();
+  var temp = "";
   bool flag = false;
-  for (var i = 0; i < s.length; i++) {
-    if (s[i] == "=") break;
-    if (s[i] == "+" || s[i] == "-" || s[i] == "/" || s[i] == "*") {
-      operator = s[i];
+  for (var i = 0; i < str.length; i++) {
+    print("\t----${i}_ts_scan__${str[i]}");
+    if (str[i] == "=") {
+      list.add(temp);
+      list.addAll(operators.reversed);
+      break;
+    }
+    if (str[i] == "+" || str[i] == "-" || str[i] == "/" || str[i] == "*") {
+      list.add(temp);
+      bool added = false;
+      // list.add(str[i]);
+      if (operators.isNotEmpty) {
+        if (weight(operators.last) < weight(str[i])) {
+          operators.add(str[i]);
+          added = true;
+          print(operators);
+        } else {
+          while (operators.isNotEmpty &&
+              weight(operators.last) >= weight(str[i])) {
+            print(operators);
+            print(list);
+            list.add(operators.removeLast());
+            print(operators);
+          }
+        }
+      }
       flag = true;
-    } else if (flag == false) {
-      a += s[i];
-    } else if (flag == true) {
-      b += s[i];
+      added ? null : operators.add(str[i]);
+      // continue;
+    }
+    if (flag == false) {
+      temp += str[i];
+    }
+    if (flag == true) {
+      temp = "";
+      flag = false;
     }
   }
-  print(a);
-  print(b);
-  double n1 = double.parse(a);
-  double n2 = double.parse(b);
-  switch (operator) {
+  print(list);
+  print(operators);
+  ans = evalExpr(list);
+  print("ans is : $ans");
+  return (ans.toString());
+}
+
+int weight(var x) {
+  int v = 0;
+  switch (x) {
     case "+":
-      ans = (n1 + n2).toString();
     case "-":
-      ans = (n1 - n2).toString();
+      return 3;
     case "*":
-      ans = (n1 * n2).toString();
     case "/":
-      ans = (n1 / n2).toString();
-    default:
-      ans = "wrong";
+      return 5;
+    case "^":
+      return 7;
   }
-  return ans;
+  return v;
+}
+
+dynamic evalExpr(var exp) {
+  List<double> stk = [];
+  for (var i = 0; i < exp.length; i++) {
+    print("eval exp stack is: $stk");
+    if (exp[i] == "+" || exp[i] == "-" || exp[i] == "/" || exp[i] == "*") {
+      double n2 = stk.removeLast();
+      double n1 = stk.removeLast();
+      double ans = 0;
+      switch (exp[i]) {
+        case "+":
+          ans = (n1 + n2);
+        case "-":
+          ans = (n1 - n2);
+        case "*":
+          ans = (n1 * n2);
+        case "/":
+          // if (n2 == 0) throw new IntegerDivisionByZeroException();
+          ans = (n1 / n2);
+        default:
+          ans = 0;
+      }
+      stk.add(ans);
+    } else {
+      stk.add(double.parse(exp[i]));
+    }
+  }
+  return stk.removeLast();
 }
