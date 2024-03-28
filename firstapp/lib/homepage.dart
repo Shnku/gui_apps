@@ -28,7 +28,7 @@ class _MyHomepageState extends State<MyHomePage> {
   Widget buildCalculatorButton(
     String symbol, {
     Icon? icon,
-    double width = 85,
+    double width = 90,
     double height = 75,
     Function()? pressing,
   }) {
@@ -36,15 +36,15 @@ class _MyHomepageState extends State<MyHomePage> {
       height: height,
       width: width,
       margin: EdgeInsets.all(2),
-      padding: EdgeInsets.all(1),
+      padding: EdgeInsets.all(2),
       // color: Colors.black,
       child: ElevatedButton(
         style: ButtonStyle(
           backgroundColor: MaterialStatePropertyAll(Colors.blue.withAlpha(50)),
-          foregroundColor: MaterialStatePropertyAll(Colors.lightGreenAccent),
+          foregroundColor: MaterialStatePropertyAll(Colors.greenAccent),
           side: MaterialStatePropertyAll(BorderSide(width: 0)),
           elevation: MaterialStateProperty.all(5),
-          padding: MaterialStatePropertyAll(EdgeInsets.all(0)),
+          padding: MaterialStatePropertyAll(EdgeInsets.all(2)),
         ),
         onPressed: pressing ?? () => setState(() => operation += symbol),
         child: icon ?? Text(symbol, style: mytxt30),
@@ -81,12 +81,19 @@ class _MyHomepageState extends State<MyHomePage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(operation, style: mytxt50),
+                    Text(
+                      operation,
+                      style: mytxt50,
+                    ),
                     Container(
-                        height: 1,
-                        color: Colors.black,
-                        alignment: Alignment.center),
-                    Text(result, style: mytxt50)
+                      height: 1,
+                      color: Colors.black,
+                      alignment: Alignment.center,
+                    ),
+                    Text(
+                      result,
+                      style: mytxt50,
+                    )
                   ],
                 ),
               ),
@@ -95,9 +102,9 @@ class _MyHomepageState extends State<MyHomePage> {
               width: 390,
               margin: EdgeInsets.all(10),
               padding: EdgeInsets.all(5),
+              alignment: Alignment.center,
               decoration: myboxdeco,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Column(
                     children: [
@@ -156,15 +163,11 @@ class _MyHomepageState extends State<MyHomePage> {
                     buildCalculatorButton("=",
                         height: 153,
                         pressing: () => setState(() {
-                              if (result.isNotEmpty) {
-                                operation = result.substring(1);
-                                result = "";
-                              } else {
-                                operation += "=";
-                                result = "=${doCalculation(operation)}";
-                                operation = operation.replaceAll("=", "");
-                              }
-                            })),
+                          
+                              operation += "=";
+                              result = "=${doCalculation(operation)}";
+                              operation = operation.replaceAll("=", "");
+                            }))
                   ]),
                 ],
               ),
