@@ -1,21 +1,21 @@
 import "dart:math";
 import "package:flutter/material.dart";
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
+class MyCalculator extends StatefulWidget {
+  const MyCalculator({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomepageState();
+  State<MyCalculator> createState() => _MyHomepageState();
 }
 
-class _MyHomepageState extends State<MyHomePage> {
+class _MyHomepageState extends State<MyCalculator> {
   var operation = "";
   var result = "";
-  TextStyle mytxt50 = TextStyle(fontSize: 50);
-  TextStyle mytxt30 = TextStyle(fontSize: 35);
+  TextStyle mytxt50 = const TextStyle(fontSize: 50);
+  TextStyle mytxt30 = const TextStyle(fontSize: 35);
   BoxDecoration myboxdeco = BoxDecoration(
       border: Border.all(width: 1),
-      boxShadow: [
+      boxShadow: const [
         BoxShadow(
           color: Colors.black26,
           spreadRadius: 5,
@@ -35,16 +35,16 @@ class _MyHomepageState extends State<MyHomePage> {
     return Container(
       height: height,
       width: width,
-      margin: EdgeInsets.all(2),
-      padding: EdgeInsets.all(2),
+      margin: const EdgeInsets.all(2),
+      padding: const EdgeInsets.all(2),
       // color: Colors.black,
       child: ElevatedButton(
         style: ButtonStyle(
           backgroundColor: MaterialStatePropertyAll(Colors.blue.withAlpha(50)),
-          foregroundColor: MaterialStatePropertyAll(Colors.greenAccent),
-          side: MaterialStatePropertyAll(BorderSide(width: 0)),
+          foregroundColor: const MaterialStatePropertyAll(Colors.greenAccent),
+          side: const MaterialStatePropertyAll(BorderSide(width: 0)),
           elevation: MaterialStateProperty.all(5),
-          padding: MaterialStatePropertyAll(EdgeInsets.all(2)),
+          padding: const MaterialStatePropertyAll(EdgeInsets.all(2)),
         ),
         onPressed: pressing ?? () => setState(() => operation += symbol),
         child: icon ?? Text(symbol, style: mytxt30),
@@ -55,16 +55,16 @@ class _MyHomepageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 104, 161, 71),
+      backgroundColor: const Color.fromARGB(255, 104, 161, 71),
       appBar: AppBar(
-        title: Text("Calculator App"),
+        title: const Text("Calculator App"),
         toolbarHeight: 40,
         centerTitle: true,
         bottomOpacity: 0.5,
         forceMaterialTransparency: true,
         elevation: 2,
         shadowColor: Colors.green,
-        backgroundColor: Color.fromARGB(255, 81, 116, 49),
+        backgroundColor: const Color.fromARGB(255, 81, 116, 49),
         foregroundColor: Colors.white,
       ),
       body: Center(
@@ -74,21 +74,20 @@ class _MyHomepageState extends State<MyHomePage> {
               height: 160,
               width: 390,
               decoration: myboxdeco,
-              margin: EdgeInsets.fromLTRB(10, 10, 10, 5),
+              margin: const EdgeInsets.fromLTRB(10, 10, 10, 5),
               child: SingleChildScrollView(
-                padding: EdgeInsets.symmetric(horizontal: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
                       operation,
-                      style: mytxt50,
+                      style:mytxt50,
                     ),
                     Container(
                       height: 1,
                       color: Colors.black,
-                      alignment: Alignment.center,
+                      // alignment: Alignment.center,
                     ),
                     Text(
                       result,
@@ -98,82 +97,84 @@ class _MyHomepageState extends State<MyHomePage> {
                 ),
               ),
             ),
-            Container(
-              width: 390,
-              margin: EdgeInsets.all(10),
-              padding: EdgeInsets.all(5),
-              alignment: Alignment.center,
-              decoration: myboxdeco,
-              child: Row(
-                children: [
-                  Column(
-                    children: [
-                      Row(
-                        children: [
-                          buildCalculatorButton("+",
-                              icon: Icon(Icons.add, size: 40)),
-                          buildCalculatorButton("-",
-                              icon: Icon(Icons.remove, size: 40)),
-                          buildCalculatorButton("*",
-                              icon: Icon(Icons.close, size: 40)),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          buildCalculatorButton("1"),
-                          buildCalculatorButton("2"),
-                          buildCalculatorButton("3"),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          buildCalculatorButton("4"),
-                          buildCalculatorButton("5"),
-                          buildCalculatorButton("6"),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          buildCalculatorButton("7"),
-                          buildCalculatorButton("8"),
-                          buildCalculatorButton("9"),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          buildCalculatorButton("."),
-                          buildCalculatorButton("0"),
-                          buildCalculatorButton("C",
-                              pressing: () => setState(() => operation =
-                                  operation.substring(0, operation.length - 1)),
-                              icon: Icon(Icons.backspace, size: 30)),
-                        ],
-                      ),
-                    ],
-                  ),
-                  Column(children: [
-                    buildCalculatorButton("/"),
-                    buildCalculatorButton("^",
-                        icon: Icon(Icons.expand_less, size: 40)),
-                    buildCalculatorButton("AC",
-                        pressing: () => setState(() {
-                              operation = "";
-                              result = "";
-                            })),
-                    buildCalculatorButton("=",
-                        height: 153,
-                        pressing: () => setState(() {
-                          
-                              operation += "=";
-                              result = "=${doCalculation(operation)}";
-                              operation = operation.replaceAll("=", "");
-                            }))
-                  ]),
-                ],
+            FittedBox(
+              child: Container(
+                width: 390,
+                margin: const EdgeInsets.all(10),
+                padding: const EdgeInsets.all(5),
+                alignment: Alignment.center,
+                decoration: myboxdeco,
+                child: Row(
+                  children: [
+                    Column(
+                      children: [
+                        Row(
+                          children: [
+                            buildCalculatorButton("+",
+                                icon: const Icon(Icons.add, size: 40)),
+                            buildCalculatorButton("-",
+                                icon: const Icon(Icons.remove, size: 40)),
+                            buildCalculatorButton("*",
+                                icon: const Icon(Icons.close, size: 40)),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            buildCalculatorButton("1"),
+                            buildCalculatorButton("2"),
+                            buildCalculatorButton("3"),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            buildCalculatorButton("4"),
+                            buildCalculatorButton("5"),
+                            buildCalculatorButton("6"),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            buildCalculatorButton("7"),
+                            buildCalculatorButton("8"),
+                            buildCalculatorButton("9"),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            buildCalculatorButton("."),
+                            buildCalculatorButton("0"),
+                            buildCalculatorButton("C",
+                                pressing: () => setState(() => operation =
+                                    operation.substring(0, operation.length - 1)),
+                                icon: const Icon(Icons.backspace, size: 30)),
+                          ],
+                        ),
+                      ],
+                    ),
+                    Column(children: [
+                      buildCalculatorButton("/"),
+                      buildCalculatorButton("^",
+                          icon: const Icon(Icons.expand_less, size: 40)),
+                      buildCalculatorButton("AC",
+                          pressing: () => setState(() {
+                                operation = "";
+                                result = "";
+                              })),
+                      buildCalculatorButton("=",
+                          height: 153,
+                          pressing: () => setState(() {
+                            
+                                operation += "=";
+                                result = "=${doCalculation(operation)}";
+                                operation = operation.replaceAll("=", "");
+                              }))
+                    ]),
+                  ],
+                ),
               ),
             ),
-            SizedBox(height: 20),
-            Text("Created By ShAnku"),
+            const SizedBox(height: 20),
+            const Text("Created By ShAnku"),
           ]),
         ),
       ),
@@ -189,7 +190,6 @@ String doCalculation(String str) {
   var temp = "";
   bool flag = false;
   for (var i = 0; i < str.length; i++) {
-    print("\t----${i}_ts_scan__${str[i]}");
     if (str[i] == "=") {
       list.add(temp);
       list.addAll(operators.reversed);
@@ -206,14 +206,10 @@ String doCalculation(String str) {
         if (weight(operators.last) < weight(str[i])) {
           operators.add(str[i]);
           added = true;
-          print(operators);
         } else {
           while (operators.isNotEmpty &&
               weight(operators.last) >= weight(str[i])) {
-            print(operators);
-            print(list);
             list.add(operators.removeLast());
-            print(operators);
           }
         }
       }
@@ -229,10 +225,7 @@ String doCalculation(String str) {
       flag = false;
     }
   }
-  print(list);
-  print(operators);
   ans = evalExpr(list);
-  print("ans is : $ans");
   return (ans.toString());
 }
 
@@ -254,7 +247,6 @@ int weight(var x) {
 dynamic evalExpr(var exp) {
   List<num> stk = [];
   for (var i = 0; i < exp.length; i++) {
-    print("eval exp stack is: $stk");
     // if (exp[i] == "=") break;
     if (exp[i] == "+" ||
         exp[i] == "-" ||

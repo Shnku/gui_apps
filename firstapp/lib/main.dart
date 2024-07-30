@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
         colorScheme:
             ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 110, 76, 172)),
       ),
-      home: MyHomePage(),
+      home: MyCalculator(),
       debugShowCheckedModeBanner: false,
     );
   }
