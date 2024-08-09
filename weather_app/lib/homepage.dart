@@ -30,6 +30,7 @@ class _HomePageState extends State<HomePage> {
   //desigh..........
   @override
   Widget build(BuildContext context) {
+    TextEditingController fieldcontrol = TextEditingController();
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.transparent,
@@ -55,8 +56,8 @@ class _HomePageState extends State<HomePage> {
           ),
           gradient: const LinearGradient(
             colors: [
-              Color.fromARGB(255, 69, 171, 240),
-              Color.fromARGB(255, 240, 90, 245),
+              Color.fromARGB(255, 17, 27, 34),
+              Color.fromARGB(255, 15, 11, 15),
             ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
@@ -66,16 +67,18 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              const SizedBox(height: 30),
+              const SizedBox(height: 40),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: TextField(
+                  controller: fieldcontrol,
                   onTapOutside: (event) => FocusScope.of(context).unfocus(),
                   textAlign: TextAlign.center,
                   onSubmitted: (value) {
                     print(value);
                     instance = GettedData(search: value);
                     getter();
+                    fieldcontrol.clear();
                     // setState(() {});
                   },
                   decoration: const InputDecoration(
@@ -90,11 +93,11 @@ class _HomePageState extends State<HomePage> {
               ),
               const SizedBox(height: 50),
               Text(instance.cityData.toString(),
-                  style: GoogleFonts.alexandria(fontSize: 30)),
+                  style: GoogleFonts.mPlus1(fontSize: 30)),
               const SizedBox(height: 20),
               Text(
                 "${instance.temp} °C",
-                style: GoogleFonts.overpass(fontSize: 50),
+                style: GoogleFonts.b612(fontSize: 50),
               ),
               Text("feels-like: ${instance.feelsLike} °C"),
               const SizedBox(height: 20),
@@ -130,7 +133,7 @@ class _HomePageState extends State<HomePage> {
                       unit: '%',
                     ),
                     cardBuild(
-                      ico: const Icon(Icons.av_timer_rounded, size: 50),
+                      ico: const Icon(Icons.speed_rounded, size: 50),
                       txt: instance.pressure.toString(),
                       unit: 'mBar',
                     ),
@@ -147,7 +150,7 @@ class _HomePageState extends State<HomePage> {
 
   Card cardBuild({required String txt, required Icon ico, String? unit}) {
     return Card(
-      color: const Color.fromARGB(60, 1, 1, 1),
+      color: const Color.fromARGB(70, 10, 10, 10),
       elevation: 50,
       child: Container(
         alignment: Alignment.center,
@@ -160,7 +163,7 @@ class _HomePageState extends State<HomePage> {
             const SizedBox(height: 10),
             Text(
               txt,
-              style: GoogleFonts.amiko(fontSize: 30),
+              style: GoogleFonts.alexandria(fontSize: 30),
             ),
             Text(unit.toString()),
           ],
