@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
           prefixIconColor: Colors.white30,
         ),
         iconTheme: const IconThemeData(
-          color: Color.fromARGB(255, 57, 52, 126),
+          color: Color.fromARGB(255, 137, 130, 240),
           shadows: [Shadow(color: Colors.black), Shadow(color: Colors.black)],
         ),
       ),
