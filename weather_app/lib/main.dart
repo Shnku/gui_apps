@@ -12,24 +12,30 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      themeMode: ThemeMode.system,
       theme: ThemeData(
-        useMaterial3: true,
-        textTheme: const TextTheme(
-          bodyLarge: TextStyle(color: Colors.white),
-          bodyMedium: TextStyle(color: Colors.white),
-        ),
-        inputDecorationTheme: const InputDecorationTheme(
-          outlineBorder: BorderSide(
-            color: Colors.white,
+          useMaterial3: true,
+          // primarySwatch:
+          // const MaterialColor(2, {1: Colors.white70, 2: Colors.pink,3:Colors.black}),
+          textTheme: const TextTheme(
+            bodyLarge: TextStyle(color: Colors.white),
+            bodyMedium: TextStyle(color: Colors.white),
           ),
-          labelStyle: TextStyle(color: Colors.white),
-          prefixIconColor: Colors.white30,
-        ),
-        iconTheme: const IconThemeData(
-          color: Color.fromARGB(255, 137, 130, 240),
-          shadows: [Shadow(color: Colors.black), Shadow(color: Colors.black)],
-        ),
-      ),
+          inputDecorationTheme: const InputDecorationTheme(
+            outlineBorder: BorderSide(
+              color: Colors.white,
+            ),
+            labelStyle: TextStyle(color: Colors.white),
+            prefixIconColor: Colors.white30,
+          ),
+          // iconTheme: const IconThemeData(
+          //   color: Colors.blue,
+          //   shadows: [Shadow(color: Colors.black), Shadow(color: Colors.black)],
+          // ),
+          cardTheme: const CardTheme(
+            shadowColor: Colors.white12,
+            clipBehavior: Clip.antiAlias,
+          )),
       home: const HomePage(title: 'weather_app'),
       debugShowCheckedModeBanner: false,
     );

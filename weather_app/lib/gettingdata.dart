@@ -6,11 +6,17 @@ class GettedData {
   String? temp;
   String? humidity;
   String? feelsLike;
+  double? max;
+  double? min;
   String? pressure;
   String? cityData;
+  String? visibl;
   Map? wind;
   Map? conditions;
-  String? iconUrl;
+  String iconUrl = 'https://openweathermap.org/img/wn/10b@4x.png';
+  Map? cord;
+
+  String aqi = 'no';
   // Map? json;
 
   GettedData({required this.search});
@@ -40,13 +46,27 @@ class GettedData {
       print("coiedfwedw\n");
       temp = data['main']['temp'].toString();
       feelsLike = data['main']['feels_like'].toString();
+      max = data['main']['temp_max'];
+      min = data['main']['temp_min'];
       humidity = data['main']['humidity'].toString();
       pressure = data['main']['pressure'].toString();
       conditions = data['weather'][0];
       cityData = data['name'] + ', ' + data['sys']['country'];
+      visibl = (data['visibility'] / 100).toString();
       wind = data['wind'];
+      cord = data['coord'];
       iconUrl =
           "https://openweathermap.org/img/wn/${(data['weather'][0]['icon']).toString()}@4x.png";
+
+      Response response2 = await get(Uri.parse(
+          'http://api.openweathermap.org/data/2.5/air_pollution?lat=${cord?['lat']}&lon=${cord?['lon']}&appid=d46e83574c1f494bf7e5b93004ab9cd6'));
+      if (response2.statusCode == 200) {
+        Map data2 = jsonDecode(response2.body);
+        print(data2);
+        aqi = (data2['list'][0]['main']['aqi']).toString();
+      } else {
+        throw Exception('Failed to load uaqi');
+      }
     } else {
       temp = feelsLike = humidity = pressure = iconUrl = "no data";
       conditions = wind = {'key': 'no datra'};
@@ -60,7 +80,7 @@ Map<String, dynamic> bgimageIndex = {
   "null":
       "https://images.unsplash.com/photo-1519422073259-4a67b15ea2e6?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   "Clouds":
-      "https://images.unsplash.com/photo-1695146695494-f74c1ccbcba0?q=80&w=1472&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "https://images.unsplash.com/photo-1574780986957-74f4ee225b87?q=80&w=1476&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   "Thunderstorm":
       "https://images.unsplash.com/photo-1562155618-e1a8bc2eb04f?q=80&w=1491&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   "Rain":
@@ -68,7 +88,7 @@ Map<String, dynamic> bgimageIndex = {
   "Haze":
       "https://images.unsplash.com/photo-1446339640351-36086581f5f6?q=80&w=1632&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   "Clear":
-      "https://images.unsplash.com/photo-1587993202407-88b4156fe89f?q=80&w=1648&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "https://images.unsplash.com/photo-1691756124504-f34d35665000?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   "Mist":
       "https://images.unsplash.com/photo-1486327764279-9ad06d206d9f?q=80&w=1632&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   "Fog":
@@ -79,3 +99,12 @@ Map<String, dynamic> bgimageIndex = {
       "https://images.unsplash.com/photo-1478265409131-1f65c88f965c?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
 };
 //rain //https://images.unsplash.com/photo-1507027682794-35e6c12ad5b4?q=80&w=1587&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D
+
+Map<String, dynamic> aqidata = {
+  'Null': 'no',
+  '1': 'Good',
+  '2': 'Fair',
+  '3': 'Moderate',
+  '4': 'Poor',
+  '5': 'Very Poor'
+};
