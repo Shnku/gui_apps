@@ -6,16 +6,15 @@ class GettedData {
   String? temp;
   String? humidity;
   String? feelsLike;
-  double? max;
-  double? min;
+  String? max;
+  String? min;
   String? pressure;
   String? cityData;
   String? visibl;
   Map? wind;
   Map? conditions;
-  String iconUrl = 'https://openweathermap.org/img/wn/10b@4x.png';
+  String iconUrl = 'https://openweathermap.org/img/wn/04n@4x.png';
   Map? cord;
-
   String aqi = 'no';
   // Map? json;
 
@@ -46,8 +45,8 @@ class GettedData {
       print("coiedfwedw\n");
       temp = data['main']['temp'].toString();
       feelsLike = data['main']['feels_like'].toString();
-      max = data['main']['temp_max'];
-      min = data['main']['temp_min'];
+      max = data['main']['temp_max'].toString();
+      min = data['main']['temp_min'].toString();
       humidity = data['main']['humidity'].toString();
       pressure = data['main']['pressure'].toString();
       conditions = data['weather'][0];
@@ -84,9 +83,12 @@ Map<String, dynamic> bgimageIndex = {
   "Thunderstorm":
       "https://images.unsplash.com/photo-1562155618-e1a8bc2eb04f?q=80&w=1491&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   "Rain":
-      "https://images.unsplash.com/photo-1507027682794-35e6c12ad5b4?q=80&w=1587&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      'https://images.unsplash.com/photo-1691265690307-47c9a0cffb0a?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  // 'https://images.unsplash.com/photo-1516279232585-44b3f7e8bad4?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  // "https://images.unsplash.com/photo-1507027682794-35e6c12ad5b4?q=80&w=1587&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   "Haze":
-      "https://images.unsplash.com/photo-1446339640351-36086581f5f6?q=80&w=1632&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      'https://images.unsplash.com/photo-1526281216101-e55f00f0db7a?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  // "https://images.unsplash.com/photo-1446339640351-36086581f5f6?q=80&w=1632&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   "Clear":
       "https://images.unsplash.com/photo-1691756124504-f34d35665000?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   "Mist":
@@ -98,7 +100,6 @@ Map<String, dynamic> bgimageIndex = {
   "Snow":
       "https://images.unsplash.com/photo-1478265409131-1f65c88f965c?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
 };
-//rain //https://images.unsplash.com/photo-1507027682794-35e6c12ad5b4?q=80&w=1587&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D
 
 Map<String, dynamic> aqidata = {
   'Null': 'no',
@@ -108,3 +109,31 @@ Map<String, dynamic> aqidata = {
   '4': 'Poor',
   '5': 'Very Poor'
 };
+
+String getWindDirection(String? deg) {
+  String dir = '';
+  if (deg == null) return dir;
+  int degree = int.parse(deg);
+  if (degree >= 0 && degree < 22.5) {
+    dir = 'from N';
+  } else if (degree >= 22.5 && degree < 67.5) {
+    dir = 'from NE';
+  } else if (degree >= 67.5 && degree < 112.5) {
+    dir = 'from E';
+  } else if (degree >= 112.5 && degree < 157.5) {
+    dir = 'from SE';
+  } else if (degree >= 157.5 && degree < 202.5) {
+    dir = 'from S';
+  } else if (degree >= 202.5 && degree < 247.5) {
+    dir = 'from SW';
+  } else if (degree >= 247.5 && degree < 292.5) {
+    dir = 'from W';
+  } else if (degree >= 292.5 && degree < 337.5) {
+    dir = 'from NW';
+  } else if (degree >= 337.5 && degree < 360) {
+    dir = 'from N';
+  } else {
+    dir = 'null'; // Handle invalid degree values
+  }
+  return dir;
+}

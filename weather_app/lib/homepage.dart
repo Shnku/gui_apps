@@ -68,7 +68,7 @@ class _HomePageState extends State<HomePage> {
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               const SizedBox(height: 35),
               Padding(
@@ -102,12 +102,12 @@ class _HomePageState extends State<HomePage> {
                 "🌡️${instance.temp}°C",
                 style: GoogleFonts.b612(fontSize: 50),
               ),
+              Text('max🔺${instance.max}°C,\t min🔻${instance.min}°C '),
               Text("feels-like: ${instance.feelsLike}°C"),
-              Text('max: ${instance.max}°C, min: ${instance.min}°C '),
               const SizedBox(height: 10),
               Card(
-                color: const Color.fromARGB(40, 1, 1, 1),
-                elevation: 50,
+                color: const Color.fromARGB(106, 10, 10, 10),
+                elevation: 30,
                 child: BackdropFilter(
                   filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
                   child: Image.network(
@@ -115,6 +115,10 @@ class _HomePageState extends State<HomePage> {
                     height: 140,
                     width: 140,
                     fit: BoxFit.fill,
+                    errorBuilder: (context, error, stackTrace) {
+                      // Return a placeholder widget or error message
+                      return const Icon(Icons.error);
+                    },
                   ),
                 ),
               ),
@@ -125,14 +129,39 @@ class _HomePageState extends State<HomePage> {
               Text((instance.conditions?['description']).toString()),
               const SizedBox(height: 20),
               FittedBox(
+                alignment: Alignment.center,
+                fit: BoxFit.contain,
+                child: Padding(
+                  padding: const EdgeInsets.all(3.0),
+                  child: Row(
+                    children: [
+                      cardBuildHorizontal(
+                        txt: (instance.wind?['speed']).toString(),
+                        // ico: const Icon(Icons.air, size: 50),
+                        ico: 'icones/wind-power.png',
+                        unit:
+                            '\n  Km/h\n (${getWindDirection(instance.wind?['deg'].toString())})',
+                      ),
+                      cardBuildHorizontal(
+                        // ico: const Icon(Icons.health_and_safety_outlined,size: 50),
+                        ico: 'icones/air-quality.png',
+                        txt: instance.aqi,
+                        unit: '\n  PPM\n (${aqidata[instance.aqi]})',
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              FittedBox(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     cardBuild(
-                      txt: (instance.wind?['speed']).toString(),
-                      // ico: const Icon(Icons.air, size: 50),
-                      ico: 'icones/wind-power.png',
-                      unit: 'Km/h',
+                      // ico: const Icon(Icons.visibility, size: 50),
+                      ico: 'icones/visibility.png',
+                      txt: instance.visibl.toString(),
+                      unit: '%',
                     ),
                     cardBuild(
                       txt: instance.humidity.toString(),
@@ -150,33 +179,16 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               // const SizedBox(height: 5),
-              FittedBox(
-                alignment: Alignment.center,
-                fit: BoxFit.contain,
-                child: Padding(
-                  padding: const EdgeInsets.all(3.0),
-                  child: Row(
-                    children: [
-                      cardBuildHorizontal(
-                        // ico: const Icon(Icons.health_and_safety_outlined,size: 50),
-                        ico: 'icones/air-quality.png',
-                        txt: instance.aqi,
-                        unit: ' PPM\n (${aqidata[instance.aqi]})',
-                      ),
-                      cardBuildHorizontal(
-                        // ico: const Icon(Icons.visibility, size: 50),
-                        ico: 'icones/visibility.png',
-                        txt: instance.visibl.toString(),
-                        unit: '%',
-                      ),
-                    ],
-                  ),
-                ),
+              const SizedBox(height: 25),
+              const Divider(
+                indent: 50,
+                endIndent: 50,
+                thickness: 0.1,
+                height: 0,
               ),
-              const SizedBox(height: 30),
               const Text(
                 'powered by OpenWeather free API\ncreated by ShAnku',
-                style: TextStyle(fontSize: 9),
+                style: TextStyle(fontSize: 9, color: Colors.white38),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 10),
@@ -190,13 +202,14 @@ class _HomePageState extends State<HomePage> {
   Card cardBuildHorizontal(
       {required String txt, required String ico, String? unit}) {
     return Card(
-      color: const Color.fromARGB(150, 15, 15, 15),
+      color: const Color.fromARGB(134, 10, 10, 10),
+      elevation: 1,
       child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+        filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
         child: Container(
           height: 100,
           width: 185,
-          margin: const EdgeInsets.symmetric(horizontal: 10),
+          margin: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -216,10 +229,10 @@ class _HomePageState extends State<HomePage> {
   Card cardBuild({required String txt, required String ico, String? unit}) {
     return Card(
       borderOnForeground: true,
-      color: const Color.fromARGB(90, 15, 15, 15),
-      elevation: 50,
+      color: const Color.fromARGB(146, 10, 10, 10),
+      elevation: 1,
       child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+        filter: ImageFilter.blur(sigmaX: 6.0, sigmaY: 6.0),
         child: Container(
           alignment: Alignment.center,
           margin: const EdgeInsets.only(top: 20),

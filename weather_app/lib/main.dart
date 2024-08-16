@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
           //   shadows: [Shadow(color: Colors.black), Shadow(color: Colors.black)],
           // ),
           cardTheme: const CardTheme(
-            shadowColor: Colors.white12,
+            shadowColor: Colors.white10,
             clipBehavior: Clip.antiAlias,
           )),
       home: const HomePage(title: 'weather_app'),
