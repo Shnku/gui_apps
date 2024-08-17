@@ -1,8 +1,8 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:weather_app/gettingdata.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:weather_app/gettingdata.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
@@ -16,10 +16,18 @@ class _HomePageState extends State<HomePage> {
   //data fetching...........
   GettedData instance = GettedData(search: "hugli");
   getter() async {
-    await instance.getData();
-    print(instance.temp);
-    print(instance.iconUrl);
-    setState(() {});
+    try {
+      await instance.getData();
+      print(instance.temp);
+      print(instance.iconUrl);
+      setState(() {});
+    } catch (error) {
+      instance.cityData = 'no city name found';
+      print("no search found/ error fetching $error");
+      setState(() {
+        // Update state to reflect the error (e.g., show an error message)
+      });
+    }
   }
 
   //initiation.....
@@ -29,7 +37,7 @@ class _HomePageState extends State<HomePage> {
     getter();
   }
 
-  //desigh..........
+  //design..........
   @override
   Widget build(BuildContext context) {
     TextEditingController fieldcontrol = TextEditingController();

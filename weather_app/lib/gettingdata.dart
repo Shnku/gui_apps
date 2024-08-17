@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:http/http.dart';
 
 class GettedData {
@@ -42,7 +43,7 @@ class GettedData {
     if (response.statusCode == 200) {
       Map data = jsonDecode(response.body);
       print(data);
-      print("coiedfwedw\n");
+      // print("coiedfwedw\n");
       temp = data['main']['temp'].toString();
       feelsLike = data['main']['feels_like'].toString();
       max = data['main']['temp_max'].toString();
@@ -66,11 +67,10 @@ class GettedData {
       } else {
         throw Exception('Failed to load uaqi');
       }
+      // return true;
     } else {
-      temp = feelsLike = humidity = pressure = iconUrl = "no data";
-      conditions = wind = {'key': 'no datra'};
-      print("no search found/ error fetching");
       throw Exception('Failed to load user');
+      // return false;
     }
   }
 }
