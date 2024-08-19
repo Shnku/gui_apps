@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:question_app/main.dart';
 import 'package:question_app/qustionsource.dart';
 import 'package:question_app/qustionwidget.dart';
 
@@ -12,7 +14,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  var len = 10.0;
   List<GlobalKey<QuestionWidgetstate>> questionKeys = List.generate(
       qustionList.length, (index) => GlobalKey<QuestionWidgetstate>());
 
@@ -38,15 +39,23 @@ class _MyHomePageState extends State<MyHomePage> {
         blurRadius: 50,
       )
     ],
-    color: Colors.purple[100],
+    color: const Color.fromARGB(255, 62, 57, 105),
   );
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        backgroundColor: Colors.transparent,
         title: Text(widget.title),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.brightness_6),
+            onPressed: () {
+              Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
+            },
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -62,15 +71,38 @@ class _MyHomePageState extends State<MyHomePage> {
                 );
               },
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 30),
             ElevatedButton(
-                onPressed: () {
-                  evalResult();
-                  len = 300.0;
-                  setState(() {});
-                },
-                child: const Text('Get Score')),
+              onPressed: () {
+                showModalBottomSheet(
+                    context: context,
+                    builder: (BuildContext cb) => bottomSheet());
+                evalResult();
+                setState(() {});
+              },
+              child: const Text('Get Score'),
+            ),
             const SizedBox(height: 90),
+          ],
+        ),
+      ),
+      drawer: const Drawer(
+        width: 220,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ListTile(
+              leading: Icon(Icons.ac_unit),
+              title: Text('Qustion sheet 1'),
+            ),
+            ListTile(
+              leading: Icon(Icons.ac_unit),
+              title: Text('Qustion sheet 2'),
+            ),
+            ListTile(
+              leading: Icon(Icons.ac_unit),
+              title: Text('Qustion sheet 3'),
+            )
           ],
         ),
       ),
@@ -98,36 +130,36 @@ class _MyHomePageState extends State<MyHomePage> {
       //   child: Text('marks \n\t\t\t\t$gettedMarks'),
       // ),
       // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+    );
+  }
 
-      bottomSheet: Container(
-        padding: const EdgeInsets.all(50),
-        decoration: boxDecoration,
-        height: len,
-        width: double.infinity,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              '$gettedMarks \nYour Marks ',
-              textAlign: TextAlign.center,
-              textScaler: const TextScaler.linear(1.8),
-            ),
-            Text(
-              '$totalmarks \nTotal marks',
-              textAlign: TextAlign.center,
-              textScaler: const TextScaler.linear(1.8),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                resetAllQuestions();
-                setState(() {
-                  len = 10.0;
-                });
-              },
-              child: const Text('ok', style: TextStyle(fontSize: 20)),
-            ),
-          ],
-        ),
+  Container bottomSheet() {
+    return Container(
+      padding: const EdgeInsets.all(50),
+      decoration: boxDecoration,
+      height: 350,
+      width: double.infinity,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            '$gettedMarks \nYour Marks ',
+            textAlign: TextAlign.center,
+            textScaler: const TextScaler.linear(1.8),
+          ),
+          Text(
+            '$totalmarks \nTotal marks',
+            textAlign: TextAlign.center,
+            textScaler: const TextScaler.linear(1.8),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              resetAllQuestions();
+              Navigator.of(context).pop();
+            },
+            child: const Text('ok', style: TextStyle(fontSize: 20)),
+          ),
+        ],
       ),
     );
   }

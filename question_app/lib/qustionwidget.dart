@@ -25,7 +25,7 @@ class QuestionWidgetstate extends State<QuestionWidget> {
     setState(() {
       tapped = List.generate(4, (i) => false);
       iconDataList = List.generate(4, (i) => Icons.check_box_outline_blank);
-      c = List.generate(4, (i) => const Color.fromARGB(0, 44, 19, 19));
+      c = List.generate(4, (i) => Colors.black12);
     });
   }
 
@@ -34,19 +34,39 @@ class QuestionWidgetstate extends State<QuestionWidget> {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.0),
-        color: const Color.fromARGB(137, 180, 136, 255),
+        color: const Color.fromARGB(117, 170, 87, 224),
         border: Border.all(
-          color: Colors.deepPurple.withAlpha(100),
+          color: const Color.fromARGB(99, 120, 84, 182),
           width: 4,
         ),
       ),
-      margin: const EdgeInsets.only(top: 15, left: 10, right: 10),
-      padding: const EdgeInsets.all(10),
+      margin: const EdgeInsets.fromLTRB(10, 15, 10, 0),
+      padding: const EdgeInsets.all(3),
       child: Column(
-        // mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text('${widget.index + 1}. ${qustionList[widget.index]['q']}'),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Card(
+                margin: const EdgeInsets.fromLTRB(0, 6, 0, 0),
+                child: Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: Text('${widget.index + 1}'),
+                ),
+              ),
+              Expanded(
+                child: Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      '${qustionList[widget.index]['q']}',
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
           const Divider(
             color: Colors.black,
             height: 25,
@@ -61,41 +81,54 @@ class QuestionWidgetstate extends State<QuestionWidget> {
     );
   }
 
-  List c = List.generate(4, (int i) => const Color.fromARGB(0, 44, 19, 19));
-  TextButton _answerButton(int which) {
-    return TextButton.icon(
-      style: TextButton.styleFrom(
-        alignment: Alignment.center,
-        surfaceTintColor: Colors.amber,
-        backgroundColor: c[which],
-      ),
-      icon: Icon(iconDataList[which]),
-      iconAlignment: IconAlignment.end,
-      onPressed: () => _doOnPress(which),
-      label: Text(
-        '${which + 1}) ${qustionList[widget.index]['a$which']}',
+  late List c;
+  Widget _answerButton(int which) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(3, 2, 2, 3),
+      child: TextButton.icon(
+        iconAlignment: IconAlignment.end,
+        onPressed: () => _doOnPress(which),
+        icon: Icon(iconDataList[which]),
+        label: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('${which + 1})'),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text('${qustionList[widget.index]['a$which']}'),
+            ),
+          ],
+        ),
+        style: TextButton.styleFrom(
+          alignment: Alignment.center,
+          padding: const EdgeInsets.all(10),
+          backgroundColor: c[which],
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+          ),
+        ),
       ),
     );
   }
 
   void _doOnPress(int choice) {
-    print('in loop:$gettedMarks');
-    for (int i = 0; i < 4; i++) {
-      if (i == choice) {
-        tapped[i] = true;
-        iconDataList[i] = Icons.check_box;
-        qustionList[widget.index]['marks'] = 'a$choice';
-        c[i] = Colors.purple[300];
-      } else {
-        tapped[i] = false;
-        iconDataList[i] = Icons.check_box_outline_blank;
-        qustionList[widget.index]['marks'] = 'a$choice';
-        c[i] = Colors.transparent;
+    setState(() {
+      for (int i = 0; i < 4; i++) {
+        if (i == choice) {
+          tapped[i] = true;
+          iconDataList[i] = Icons.check_box;
+          qustionList[widget.index]['marks'] = 'a$choice';
+          c[i] = const Color.fromARGB(141, 125, 98, 201);
+        } else {
+          tapped[i] = false;
+          iconDataList[i] = Icons.check_box_outline_blank;
+          qustionList[widget.index]['marks'] = 'a$choice';
+          c[i] = Colors.black12;
+        }
       }
-    }
-    print(qustionList[widget.index]);
-    print(totalmarks);
-    print(gettedMarks);
-    setState(() {});
+    });
+    // print(qustionList[widget.index]);
+    // print(totalmarks);
+    // print(gettedMarks);
   }
 }
