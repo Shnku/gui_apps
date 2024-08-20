@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:question_app/rootpage.dart';
-import 'homepage.dart';
+import 'package:question_app/pages_or_routs/rootpage.dart';
+import 'pages_or_routs/homepage.dart';
 
 void main() {
   runApp(

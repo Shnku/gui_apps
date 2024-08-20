@@ -1,14 +1,11 @@
 // ignore_for_file: avoid_print, must_be_immutable
 
 import 'package:flutter/material.dart';
-import 'package:question_app/questiondata/qlist3.dart';
 import 'selectdataset.dart';
 
 class QuestionWidget extends StatefulWidget {
   int index;
-  late QuestionSelector questionSelector;
-  QuestionWidget(
-      {super.key, required this.index, required this.questionSelector});
+  QuestionWidget({super.key, required this.index});
 
   @override
   State<QuestionWidget> createState() => QuestionWidgetstate();
@@ -17,6 +14,8 @@ class QuestionWidget extends StatefulWidget {
 class QuestionWidgetstate extends State<QuestionWidget> {
   var iconDataList = [];
   List<bool> tapped = [];
+  late bool attemped;
+
   @override
   void initState() {
     toogleReset();
@@ -28,6 +27,7 @@ class QuestionWidgetstate extends State<QuestionWidget> {
       tapped = List.generate(4, (i) => false);
       iconDataList = List.generate(4, (i) => Icons.check_box_outline_blank);
       c = List.generate(4, (i) => Colors.black12);
+      attemped = false;
     });
   }
 
@@ -62,7 +62,7 @@ class QuestionWidgetstate extends State<QuestionWidget> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      widget.questionSelector.qustionList[widget.index]['q'],
+                      '${qustionList[widget.index]['q']}',
                     ),
                   ),
                 ),
@@ -97,9 +97,7 @@ class QuestionWidgetstate extends State<QuestionWidget> {
             Text('${which + 1})'),
             const SizedBox(width: 8),
             Expanded(
-              child: Text(
-                widget.questionSelector.qustionList[widget.index]['a$which'],
-              ),
+              child: Text('${qustionList[widget.index]['a$which']}'),
             ),
           ],
         ),
@@ -118,15 +116,16 @@ class QuestionWidgetstate extends State<QuestionWidget> {
   void _doOnPress(int choice) {
     setState(() {
       for (int i = 0; i < 4; i++) {
+        attemped = true; //tapped means attempted.. no untap
         if (i == choice) {
           tapped[i] = true;
           iconDataList[i] = Icons.check_box;
-          // qustionList[widget.index]['marks'] = 'a$choice';
+          qustionList[widget.index]['marks'] = 'a$choice';
           c[i] = const Color.fromARGB(141, 125, 98, 201);
         } else {
           tapped[i] = false;
           iconDataList[i] = Icons.check_box_outline_blank;
-          // qustionList[widget.index]['marks'] = 'a$choice';
+          qustionList[widget.index]['marks'] = 'a$choice';
           c[i] = Colors.black12;
         }
       }

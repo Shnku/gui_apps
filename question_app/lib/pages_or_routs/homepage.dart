@@ -6,7 +6,7 @@ import 'package:question_app/questiondata/qlist2.dart';
 import 'package:question_app/questiondata/qlist3.dart';
 import 'package:question_app/managequestion/qustionwidget.dart';
 
-import 'managequestion/selectdataset.dart';
+import '../managequestion/selectdataset.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -18,33 +18,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  BoxDecoration boxDecoration = BoxDecoration(
-    border: Border.all(
-      color: Colors.deepPurple.withAlpha(100),
-      width: 5,
-    ),
-    borderRadius: const BorderRadius.only(
-      topLeft: Radius.circular(20),
-      topRight: Radius.circular(20),
-    ),
-    boxShadow: const <BoxShadow>[
-      BoxShadow(
-        color: Colors.black54,
-        spreadRadius: 30,
-        blurRadius: 50,
-      )
-    ],
-    color: const Color.fromARGB(255, 62, 57, 105),
-  );
-
-  late QuestionSelector selected;
-
-  @override
-  void initState() {
-    selected = QuestionSelector(qustionList: datalist1);
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -71,22 +44,44 @@ class _MyHomePageState extends State<MyHomePage> {
                 ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  itemCount: 10,
+                  itemCount: qustionList.length,
                   itemBuilder: (context, i) {
                     return QuestionWidget(
-                      index: i, questionSelector: selected,
-                      // key: selected.selectdataset(i),
+                      index: i,
+                      key: questionKeys[i],
                     );
                   },
                 ),
                 const SizedBox(height: 30),
                 ElevatedButton(
                   onPressed: () {
-                    showModalBottomSheet(
-                        context: context,
-                        builder: (BuildContext cb) => bottomSheet());
-                    selected.evalResult();
-                    setState(() {});
+                    var count = 0;
+                    for (var element in questionKeys) {
+                      if (element.currentState?.attemped == true) {
+                        count++;
+                      }
+                    }
+                    // print('count is $count');
+                    if (count >= questionKeys.length / 2) {
+                      showModalBottomSheet(
+                          context: context,
+                          builder: (BuildContext cb) => bottomSheet());
+                      evalResult();
+                      setState(() {});
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16.0)),
+                          content: const Center(
+                            child: Text(
+                                'You must Attemped more than Half Questions'),
+                          ),
+                          duration: const Duration(seconds: 3),
+                          behavior: SnackBarBehavior.floating,
+                        ),
+                      );
+                    }
                   },
                   child: const Text('Get Score'),
                 ),
@@ -99,15 +94,9 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                _addtile(
-                    datalist: selected.selectdataset(1),
-                    text: 'Qustion sheet 1'),
-                _addtile(
-                    datalist: selected.selectdataset(2),
-                    text: 'Qustion sheet 2'),
-                _addtile(
-                    datalist: selected.selectdataset(3),
-                    text: 'Qustion sheet 3'),
+                _addtile(datalist: datalist3, text: 'Qustion sheet 1'),
+                _addtile(datalist: datalist2, text: 'Qustion sheet 2'),
+                _addtile(datalist: datalist1, text: 'Qustion sheet 3'),
               ],
             ),
           ),
@@ -141,18 +130,52 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   ListTile _addtile({required List datalist, String? text}) {
+    var icon = Icons.no_accounts;
+    bool isSelected = false;
     return ListTile(
-      leading: const Icon(Icons.ac_unit),
+      leading: Icon(icon),
       title: Text('$text'),
+      // tileColor: Colors.blueGrey, //isSelected,
+      // selectedTileColor: Colors.blue,
+      // selected: isSelected,
+      // selectedColor: Colors.white,
       onTap: () {
-        selected = QuestionSelector(qustionList: datalist);
-        setState(() {});
+        qustionList = datalist;
+        qustionList.shuffle();
+        questionKeys = List.generate(
+            qustionList.length, (index) => GlobalKey<QuestionWidgetstate>());
+        resetAllQuestions();
+        resetMarks();
+        setState(() {
+          isSelected = true;
+          // isSelected = Colors.blueAccent;
+          icon = Icons.one_k;
+        });
         Navigator.of(context).pop();
       },
     );
   }
 
   Container bottomSheet() {
+    BoxDecoration boxDecoration = BoxDecoration(
+      border: Border.all(
+        color: Colors.deepPurple.withAlpha(80),
+        width: 5,
+      ),
+      borderRadius: const BorderRadius.only(
+        topLeft: Radius.circular(20),
+        topRight: Radius.circular(20),
+      ),
+      boxShadow: const <BoxShadow>[
+        BoxShadow(
+          color: Colors.black54,
+          spreadRadius: 30,
+          blurRadius: 50,
+        )
+      ],
+      color: const Color.fromARGB(87, 63, 57, 122),
+    );
+
     return Container(
       padding: const EdgeInsets.all(50),
       decoration: boxDecoration,
@@ -162,29 +185,29 @@ class _MyHomePageState extends State<MyHomePage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            '${selected.gettedMarks} \nYour Marks ',
+            '$gettedMarks \nYour Marks ',
             textAlign: TextAlign.center,
             textScaler: const TextScaler.linear(1.8),
           ),
           Text(
-            '${selected.totalmarks} \nTotal marks',
+            '$totalmarks \nTotal marks',
             textAlign: TextAlign.center,
             textScaler: const TextScaler.linear(1.8),
           ),
           ElevatedButton(
             onPressed: () {
-              selected.resetAllQuestions();
-              Navigator.pop(context);
+              resetAllQuestions();
               setState(() {});
+              Navigator.pop(context);
             },
-            child: const Text('ok', style: TextStyle(fontSize: 20)),
+            child: const Text('OK', style: TextStyle(fontSize: 20)),
           ),
           ElevatedButton(
             onPressed: () {
               Navigator.pop(context);
               Navigator.of(context).pop();
             },
-            child: const Text('Done', style: TextStyle(fontSize: 20)),
+            child: const Text('Go Home', style: TextStyle(fontSize: 20)),
           ),
         ],
       ),
