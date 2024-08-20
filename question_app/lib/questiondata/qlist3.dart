@@ -1,6 +1,6 @@
 // ignore_for_file: avoid_print
 
-final qustionList = [
+final datalist3 = [
   {
     "q": "What is the chemical symbol for the element Gold?",
     "a0": "Au",
@@ -207,19 +207,3 @@ final qustionList = [
     "marks": ""
   }
 ];
-
-final totalmarks = 5 * qustionList.length;
-int gettedMarks = 0;
-
-void evalResult() {
-  if (gettedMarks > 0) gettedMarks = 0;
-  for (var element in qustionList) {
-    print('${element['marks']}\t${element['correctAnswer']}');
-    if (element['marks'] == element['correctAnswer']) {
-      gettedMarks += 5;
-    } else {
-      // gettedMarks -= 5;
-    }
-  }
-  print('gettingdata=$gettedMarks');
-}

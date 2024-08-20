@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:question_app/rootpage.dart';
 import 'homepage.dart';
 
 void main() {
@@ -34,7 +35,11 @@ class MyApp extends StatelessWidget {
         theme: ThemeData.light(),
         darkTheme: ThemeData.dark(),
         themeMode: themeProvider.themeMode,
-        home: const MyHomePage(title: 'Questions'),
+        initialRoute: '/',
+        routes: {
+          '/': (context) => const Rootpage(),
+          '/home': (context) => const MyHomePage(title: 'Questions'),
+        },
       );
     });
   }

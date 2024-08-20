@@ -1,11 +1,14 @@
 // ignore_for_file: avoid_print, must_be_immutable
 
 import 'package:flutter/material.dart';
-import 'package:question_app/qustionsource.dart';
+import 'package:question_app/questiondata/qlist3.dart';
+import 'selectdataset.dart';
 
 class QuestionWidget extends StatefulWidget {
   int index;
-  QuestionWidget({super.key, required this.index});
+  late QuestionSelector questionSelector;
+  QuestionWidget(
+      {super.key, required this.index, required this.questionSelector});
 
   @override
   State<QuestionWidget> createState() => QuestionWidgetstate();
@@ -14,7 +17,6 @@ class QuestionWidget extends StatefulWidget {
 class QuestionWidgetstate extends State<QuestionWidget> {
   var iconDataList = [];
   List<bool> tapped = [];
-
   @override
   void initState() {
     toogleReset();
@@ -60,7 +62,7 @@ class QuestionWidgetstate extends State<QuestionWidget> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      '${qustionList[widget.index]['q']}',
+                      widget.questionSelector.qustionList[widget.index]['q'],
                     ),
                   ),
                 ),
@@ -95,7 +97,9 @@ class QuestionWidgetstate extends State<QuestionWidget> {
             Text('${which + 1})'),
             const SizedBox(width: 8),
             Expanded(
-              child: Text('${qustionList[widget.index]['a$which']}'),
+              child: Text(
+                widget.questionSelector.qustionList[widget.index]['a$which'],
+              ),
             ),
           ],
         ),
@@ -117,12 +121,12 @@ class QuestionWidgetstate extends State<QuestionWidget> {
         if (i == choice) {
           tapped[i] = true;
           iconDataList[i] = Icons.check_box;
-          qustionList[widget.index]['marks'] = 'a$choice';
+          // qustionList[widget.index]['marks'] = 'a$choice';
           c[i] = const Color.fromARGB(141, 125, 98, 201);
         } else {
           tapped[i] = false;
           iconDataList[i] = Icons.check_box_outline_blank;
-          qustionList[widget.index]['marks'] = 'a$choice';
+          // qustionList[widget.index]['marks'] = 'a$choice';
           c[i] = Colors.black12;
         }
       }
