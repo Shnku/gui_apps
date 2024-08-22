@@ -12,10 +12,12 @@ class Rootpage extends StatefulWidget {
 class _RootpageState extends State<Rootpage> {
   final List<String> topics = [
     'Go to Question Page',
-    // 'Science',
-    // 'History',
-    // 'Geography',
-    // 'Literature',
+    'Science',
+    'Nothings',
+    'Nothings',
+    'Nothings',
+    'Nothings',
+    'Nothings',
   ];
 
   @override
@@ -38,14 +40,17 @@ class _RootpageState extends State<Rootpage> {
         body: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text(
                 'Choose a Topic for Questions',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 20),
-              // List of Topics
-              Expanded(
+              Container(
+                height: 400,
+                width: 400,
+                margin: const EdgeInsets.all(10),
                 child: ListView.builder(
                   itemCount: topics.length,
                   itemBuilder: (context, index) {

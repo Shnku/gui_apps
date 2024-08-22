@@ -20,115 +20,166 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
+    //get the screen width....
+    double width = MediaQuery.sizeOf(context).width;
+    const screenFactor = 700;
+
+    // main wigdets ........
+    Widget singleChildScrollView = ConstrainedBox(
+      constraints: const BoxConstraints.expand(),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: qustionList.length,
+              itemBuilder: (context, i) {
+                return QuestionWidget(
+                  index: i,
+                  key: questionKeys[i],
+                );
+              },
+            ),
+            const SizedBox(height: 30),
+            ElevatedButton(
+              onPressed: () {
+                var count = 0;
+                for (var element in questionKeys) {
+                  if (element.currentState?.attemped == true) {
+                    count++;
+                  }
+                }
+                // print('count is $count');
+                if (count >= questionKeys.length / 2) {
+                  showModalBottomSheet(
+                      context: context,
+                      builder: (BuildContext cb) => bottomSheet());
+                  evalResult();
+                  setState(() {});
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16.0)),
+                      content: const Center(
+                        child:
+                            Text('You must Attemped more than Half Questions'),
+                      ),
+                      duration: const Duration(seconds: 3),
+                      behavior: SnackBarBehavior.floating,
+                    ),
+                  );
+                }
+              },
+              child: const Text('Get Score'),
+            ),
+            const SizedBox(height: 90),
+          ],
+        ),
+      ),
+    );
+    Widget drawer = Drawer(
+      width: width < screenFactor ? 250 : 300,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const SizedBox(height: 10),
+          _addtile(datalist: datalist3, text: 'Qustion sheet 1'),
+          _addtile(datalist: datalist2, text: 'Qustion sheet 2'),
+          _addtile(datalist: datalist1, text: 'Qustion sheet 3'),
+          const Spacer(),
+          TextButton.icon(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              if (width < screenFactor) {
+                Navigator.pop(context);
+                Navigator.pop(context);
+              } else {
+                Navigator.pop(context);
+              }
+            },
+            label: const Text('Go Back'),
+          )
+        ],
+      ),
+    );
+    var myappBar = AppBar(
+      bottomOpacity: 3,
+      centerTitle: true,
+      backgroundColor: Colors.transparent,
+      title: Text(widget.title),
+      toolbarHeight: 50,
+      automaticallyImplyLeading: width <= screenFactor ? true : false,
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.brightness_6),
+          onPressed: () {
+            Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
+          },
+        ),
+      ],
+    );
+
+    // building the layout....
     return PopScope(
       canPop: false,
       child: SafeArea(
         child: Scaffold(
-          appBar: AppBar(
-            bottomOpacity: 3,
-            backgroundColor: Colors.transparent,
-            title: Text(widget.title),
-            actions: [
-              IconButton(
-                icon: const Icon(Icons.brightness_6),
-                onPressed: () {
-                  Provider.of<ThemeProvider>(context, listen: false)
-                      .toggleTheme();
-                },
-              ),
-            ],
+          appBar: myappBar,
+          body: LayoutBuilder(
+            builder: (context, constraints) {
+              if (constraints.maxWidth >= screenFactor) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(child: drawer),
+                    Expanded(
+                      flex: 3,
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: width > 1400 ? 100 : 10),
+                        child: singleChildScrollView,
+                      ),
+                    ),
+                  ],
+                );
+              } else {
+                return singleChildScrollView;
+              }
+            },
           ),
-          body: SingleChildScrollView(
-            child: Column(
-              children: [
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: qustionList.length,
-                  itemBuilder: (context, i) {
-                    return QuestionWidget(
-                      index: i,
-                      key: questionKeys[i],
-                    );
-                  },
-                ),
-                const SizedBox(height: 30),
-                ElevatedButton(
-                  onPressed: () {
-                    var count = 0;
-                    for (var element in questionKeys) {
-                      if (element.currentState?.attemped == true) {
-                        count++;
-                      }
-                    }
-                    // print('count is $count');
-                    if (count >= questionKeys.length / 2) {
-                      showModalBottomSheet(
-                          context: context,
-                          builder: (BuildContext cb) => bottomSheet());
-                      evalResult();
-                      setState(() {});
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16.0)),
-                          content: const Center(
-                            child: Text(
-                                'You must Attemped more than Half Questions'),
-                          ),
-                          duration: const Duration(seconds: 3),
-                          behavior: SnackBarBehavior.floating,
-                        ),
-                      );
-                    }
-                  },
-                  child: const Text('Get Score'),
-                ),
-                const SizedBox(height: 90),
-              ],
-            ),
-          ),
-          drawer: Drawer(
-            width: 220,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                _addtile(datalist: datalist3, text: 'Qustion sheet 1'),
-                _addtile(datalist: datalist2, text: 'Qustion sheet 2'),
-                _addtile(datalist: datalist1, text: 'Qustion sheet 3'),
-              ],
-            ),
-          ),
-          // Column( //not working......
-          //   children: [
-          //     SingleChildScrollView(
-          //       scrollDirection: Axis.vertical,
-          //       child: ListView.builder(
-          //         shrinkWrap: true,
-          //         itemCount: qustionList.length,
-          //         itemBuilder: (context, i) {
-          //           return QuestionWidget(index: i);
-          //         },
-          //       ),
-          //     ),
-          //     const SizedBox(height: 50),
-          //   ],
-          // ),
-          // floatingActionButton: FloatingActionButton(
-          //   onPressed: () {
-          //     evalResult();
-          //     height = height == 200.0 ? 10.0 : 200.0;
-          //     setState(() {});
-          //   },
-          //   child: Text('marks \n\t\t\t\t$gettedMarks'),
-          // ),
-          // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+          drawer: width <= screenFactor ? drawer : null,
         ),
+        // Column( //not working......
+        //   children: [
+        //     SingleChildScrollView(
+        //       scrollDirection: Axis.vertical,
+        //       child: ListView.builder(
+        //         shrinkWrap: true,
+        //         itemCount: qustionList.length,
+        //         itemBuilder: (context, i) {
+        //           return QuestionWidget(index: i);
+        //         },
+        //       ),
+        //     ),
+        //     const SizedBox(height: 50),
+        //   ],
+        // ),
+        // floatingActionButton: FloatingActionButton(
+        //   onPressed: () {
+        //     evalResult();
+        //     height = height == 200.0 ? 10.0 : 200.0;
+        //     setState(() {});
+        //   },
+        //   child: Text('marks \n\t\t\t\t$gettedMarks'),
+        // ),
+        // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       ),
     );
   }
 
+// list tile widget building function.........
   ListTile _addtile({required List datalist, String? text}) {
     var icon = Icons.no_accounts;
     bool isSelected = false;
@@ -151,11 +202,12 @@ class _MyHomePageState extends State<MyHomePage> {
           // isSelected = Colors.blueAccent;
           icon = Icons.one_k;
         });
-        Navigator.of(context).pop();
+        // Navigator.of(context).pop();
       },
     );
   }
 
+// bootom sheet widget building function.........
   Container bottomSheet() {
     BoxDecoration boxDecoration = BoxDecoration(
       border: Border.all(
