@@ -44,13 +44,13 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.transparent,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        foregroundColor: Colors.transparent,
-        // title: Text(widget.title),
-        toolbarHeight: 30,
-        centerTitle: true,
-      ),
+      // appBar: AppBar(
+      //   backgroundColor: Colors.transparent,
+      //   foregroundColor: Colors.transparent,
+      //   title: Text(widget.title),
+      //   toolbarHeight: 30,
+      //   centerTitle: true,
+      // ),
       body: Container(
         alignment: Alignment.topCenter,
         decoration: BoxDecoration(
@@ -73,135 +73,151 @@ class _HomePageState extends State<HomePage> {
             end: Alignment.bottomRight,
           ),
         ),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              const SizedBox(height: 35),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: TextField(
-                  controller: fieldcontrol,
-                  onTapOutside: (event) => FocusScope.of(context).unfocus(),
-                  textAlign: TextAlign.center,
-                  onSubmitted: (value) {
-                    print(value);
-                    instance = GettedData(search: value);
-                    getter();
-                    fieldcontrol.clear();
-                    // setState(() {});
-                  },
-                  decoration: const InputDecoration(
-                    prefixIcon: Icon(Icons.search_rounded),
-                    labelText: "search for a city",
-                    filled: true,
-                    fillColor: Color.fromARGB(50, 1, 1, 1),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(20))),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 25),
-              Text("🌎${instance.cityData}",
-                  style: GoogleFonts.mPlus1(fontSize: 20)),
-              const SizedBox(height: 15),
-              Text(
-                "🌡️${instance.temp}°C",
-                style: GoogleFonts.b612(fontSize: 50),
-              ),
-              Text('max🔺${instance.max}°C,\t min🔻${instance.min}°C '),
-              Text("feels-like: ${instance.feelsLike}°C"),
-              const SizedBox(height: 10),
-              Card(
-                color: const Color.fromARGB(106, 10, 10, 10),
-                elevation: 30,
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-                  child: Image.network(
-                    instance.iconUrl.toString(),
-                    height: 140,
-                    width: 140,
-                    fit: BoxFit.fill,
-                    errorBuilder: (context, error, stackTrace) {
-                      // Return a placeholder widget or error message
-                      return const Icon(Icons.error);
-                    },
-                  ),
-                ),
-              ),
-              Text(
-                (instance.conditions?['main']).toString(),
-                style: GoogleFonts.aBeeZee(fontSize: 20),
-              ),
-              Text((instance.conditions?['description']).toString()),
-              const SizedBox(height: 20),
-              FittedBox(
-                alignment: Alignment.center,
-                fit: BoxFit.contain,
-                child: Padding(
-                  padding: const EdgeInsets.all(3.0),
-                  child: Row(
-                    children: [
-                      cardBuildHorizontal(
-                        txt: (instance.wind?['speed']).toString(),
-                        // ico: const Icon(Icons.air, size: 50),
-                        ico: 'icones/wind-power.png',
-                        unit:
-                            '\n  Km/h\n (${getWindDirection(instance.wind?['deg'].toString())})',
+        child: CustomScrollView(
+          slivers: [
+            //using silvers extend the coloumn to max height ..
+            SliverFillRemaining(
+              hasScrollBody: false,
+              //sliver that fills the remaining space in the viewport.
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  const SizedBox(height: 35),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: BackdropFilter(
+                        // blendMode: BlendMode.difference,
+                        filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                        child: TextField(
+                          controller: fieldcontrol,
+                          onTapOutside: (event) =>
+                              FocusScope.of(context).unfocus(),
+                          textAlign: TextAlign.center,
+                          onSubmitted: (value) {
+                            print(value);
+                            instance = GettedData(search: value);
+                            getter();
+                            fieldcontrol.clear();
+                            // setState(() {});
+                          },
+                          decoration: const InputDecoration(
+                            labelText: "search for a city",
+                            prefixIcon: Icon(Icons.search_rounded),
+                            filled: true,
+                            fillColor: Color.fromARGB(150, 5, 5, 5),
+                            // border: OutlineInputBorder(
+                            //     borderRadius:
+                            //         BorderRadius.all(Radius.circular(20))),
+                          ),
+                        ),
                       ),
-                      cardBuildHorizontal(
-                        // ico: const Icon(Icons.health_and_safety_outlined,size: 50),
-                        ico: 'icones/air-quality.png',
-                        txt: instance.aqi,
-                        unit: '\n  PPM\n (${aqidata[instance.aqi]})',
-                      ),
-                    ],
+                    ),
                   ),
-                ),
-              ),
-
-              FittedBox(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    cardBuild(
-                      // ico: const Icon(Icons.visibility, size: 50),
-                      ico: 'icones/visibility.png',
-                      txt: instance.visibl.toString(),
-                      unit: '%',
+                  const SizedBox(height: 25),
+                  Text("🌎${instance.cityData}",
+                      style: GoogleFonts.mPlus1(fontSize: 20)),
+                  const SizedBox(height: 15),
+                  Text(
+                    "🌡️${instance.temp}°C",
+                    style: GoogleFonts.b612(fontSize: 50),
+                  ),
+                  Text('max🔺${instance.max}°C,\t min🔻${instance.min}°C '),
+                  Text("feels-like: ${instance.feelsLike}°C"),
+                  const SizedBox(height: 10),
+                  Card(
+                    surfaceTintColor: Colors.black,
+                    color: const Color.fromARGB(216, 1, 1, 1),
+                    elevation: 30,
+                    child: BackdropFilter(
+                      blendMode: BlendMode.screen,
+                      filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+                      child: Image.network(
+                        instance.iconUrl.toString(),
+                        height: 140,
+                        width: 140,
+                        fit: BoxFit.fill,
+                        errorBuilder: (context, error, stackTrace) {
+                          // Return a placeholder widget or error message
+                          return const Icon(Icons.error);
+                        },
+                      ),
                     ),
-                    cardBuild(
-                      txt: instance.humidity.toString(),
-                      // ico: const Icon(Icons.water_drop_outlined, size: 50),
-                      ico: 'icones/humidity.png',
-                      unit: '%',
+                  ),
+                  Text(
+                    (instance.conditions?['main']).toString(),
+                    style: GoogleFonts.aBeeZee(fontSize: 20),
+                  ),
+                  Text((instance.conditions?['description']).toString()),
+                  const SizedBox(height: 20),
+                  FittedBox(
+                    alignment: Alignment.center,
+                    fit: BoxFit.contain,
+                    child: Padding(
+                      padding: const EdgeInsets.all(3.0),
+                      child: Row(
+                        children: [
+                          cardBuildHorizontal(
+                            txt: (instance.wind?['speed']).toString(),
+                            // ico: const Icon(Icons.air, size: 50),
+                            ico: 'icones/wind-power.png',
+                            unit:
+                                '\n  Km/h\n (${getWindDirection(instance.wind?['deg'].toString())})',
+                          ),
+                          cardBuildHorizontal(
+                            // ico: const Icon(Icons.health_and_safety_outlined,size: 50),
+                            ico: 'icones/air-quality.png',
+                            txt: instance.aqi,
+                            unit: '\n  PPM\n (${aqidata[instance.aqi]})',
+                          ),
+                        ],
+                      ),
                     ),
-                    cardBuild(
-                      txt: instance.pressure.toString(),
-                      // ico: const Icon(Icons.speed_rounded, size: 50),
-                      ico: 'icones/barometer.png',
-                      unit: 'mBar',
+                  ),
+                  FittedBox(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        cardBuild(
+                          // ico: const Icon(Icons.visibility, size: 50),
+                          ico: 'icones/visibility.png',
+                          txt: instance.visibl.toString(),
+                          unit: '%',
+                        ),
+                        cardBuild(
+                          txt: instance.humidity.toString(),
+                          // ico: const Icon(Icons.water_drop_outlined, size: 50),
+                          ico: 'icones/humidity.png',
+                          unit: '%',
+                        ),
+                        cardBuild(
+                          txt: instance.pressure.toString(),
+                          // ico: const Icon(Icons.speed_rounded, size: 50),
+                          ico: 'icones/barometer.png',
+                          unit: 'mBar',
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                  const SizedBox(height: 25),
+                  const Divider(
+                    //   indent: 50,
+                    endIndent: 50,
+                    thickness: 0.1,
+                    height: 0,
+                  ),
+                  const Text(
+                    'powered by OpenWeather free API\ncreated by ShAnku',
+                    style: TextStyle(fontSize: 9, color: Colors.white38),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 10),
+                ],
               ),
-              // const SizedBox(height: 5),
-              const SizedBox(height: 25),
-              const Divider(
-                indent: 50,
-                endIndent: 50,
-                thickness: 0.1,
-                height: 0,
-              ),
-              const Text(
-                'powered by OpenWeather free API\ncreated by ShAnku',
-                style: TextStyle(fontSize: 9, color: Colors.white38),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 10),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -210,10 +226,12 @@ class _HomePageState extends State<HomePage> {
   Card cardBuildHorizontal(
       {required String txt, required String ico, String? unit}) {
     return Card(
-      color: const Color.fromARGB(134, 10, 10, 10),
+      color: const Color.fromARGB(255, 1, 1, 1),
+      surfaceTintColor: Colors.white,
       elevation: 1,
       child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+        filter: ImageFilter.blur(sigmaX: 60.0, sigmaY: 60.0),
+        blendMode: BlendMode.difference,
         child: Container(
           height: 100,
           width: 185,
@@ -237,10 +255,12 @@ class _HomePageState extends State<HomePage> {
   Card cardBuild({required String txt, required String ico, String? unit}) {
     return Card(
       borderOnForeground: true,
-      color: const Color.fromARGB(146, 10, 10, 10),
+      color: const Color.fromARGB(255, 1, 1, 1),
+      surfaceTintColor: Colors.white,
       elevation: 1,
       child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 6.0, sigmaY: 6.0),
+        blendMode: BlendMode.difference,
+        filter: ImageFilter.blur(sigmaX: 60.0, sigmaY: 60.0),
         child: Container(
           alignment: Alignment.center,
           margin: const EdgeInsets.only(top: 20),
