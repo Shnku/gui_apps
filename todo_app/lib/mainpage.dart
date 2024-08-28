@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:todo_app/customutiltiles.dart';
@@ -27,12 +25,19 @@ class _MainpageState extends State<Mainpage> {
   }
 
   @override
+  void dispose() {
+    Hive.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
         centerTitle: true,
         backgroundColor: Colors.transparent,
+        forceMaterialTransparency: true,
       ),
       body: ListView.builder(
         itemCount: db.tasksTodo.length,
@@ -45,10 +50,12 @@ class _MainpageState extends State<Mainpage> {
           );
         },
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: _createTaskNew,
         tooltip: 'Add new task',
-        child: const Icon(Icons.add),
+        icon: const Icon(Icons.add_circle_outline_outlined),
+        label: const Text('New Task'),
+        elevation: 30,
       ),
     );
   }
@@ -79,10 +86,16 @@ class _MainpageState extends State<Mainpage> {
   }
 
   void _saveTask() {
-    db.tasksTodo.add([_textcontroller.text, false]);
-    _textcontroller.clear();
-    setState(() {});
-    Navigator.of(context).pop();
-    db.updateDb();
+    if (_textcontroller.text != '') {
+      db.tasksTodo.add([_textcontroller.text, false]);
+      _textcontroller.clear();
+      setState(() {});
+      Navigator.of(context).pop();
+      db.updateDb();
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Your task cant be empty'),
+      ));
+    }
   }
 }

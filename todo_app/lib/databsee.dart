@@ -2,7 +2,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 class TasksDB {
   List tasksTodo = [];
-  var box = Hive.box('mydb');
+  final box = Hive.box('mydb');
 
   //initiate.. for firat time creation..
   void initDb() {
@@ -17,8 +17,8 @@ class TasksDB {
     box.put('key', tasksTodo);
   }
 
-  //load previous data..
+  //load previous data..//!to tasksTodo..
   void loadDb() {
-    box.get('key');
+    tasksTodo = box.get('key');
   }
 }

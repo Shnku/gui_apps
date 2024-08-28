@@ -19,9 +19,10 @@ class MyTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+      margin: const EdgeInsets.fromLTRB(17, 13, 17, 0),
       child: Slidable(
         endActionPane: ActionPane(
+          extentRatio: 0.31,
           motion: const BehindMotion(),
           children: [
             SlidableAction(
@@ -34,19 +35,20 @@ class MyTile extends StatelessWidget {
             ),
           ],
         ),
-        child: Row(
-          children: [
-            Checkbox(value: isDone, onChanged: onChanged),
-            const SizedBox(width: 10),
-            Text(
-              data,
-              style: TextStyle(
-                fontSize: 20,
-                decoration:
-                    isDone ? TextDecoration.lineThrough : TextDecoration.none,
-              ),
+        child: ListTile(
+          leading: Checkbox(
+            value: isDone,
+            onChanged: onChanged,
+            activeColor: Colors.deepPurple[300],
+          ),
+          title: Text(
+            data,
+            style: TextStyle(
+              fontSize: 20,
+              decoration:
+                  isDone ? TextDecoration.lineThrough : TextDecoration.none,
             ),
-          ],
+          ),
         ),
       ),
     );
@@ -67,17 +69,28 @@ class MyDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      icon: const Icon(Icons.add_task_outlined),
+      shadowColor: Colors.deepPurple[200],
+      insetPadding: const EdgeInsets.all(15),
+      actionsPadding: const EdgeInsets.all(20),
+      actionsOverflowButtonSpacing: 15,
+      elevation: 25,
       actions: [
         TextField(
           controller: textcontroller,
-          onSubmitted: (value) => onPressed,
+          // onSubmitted: (value) => onPressed,
+          // validator: (value) {
+          //   if (value == null || value.isEmpty) {
+          //     return 'Please enter some text'; // Validation message
+          //   }
+          //   return null; // Return null if the input is valid
+          // },
         ),
         ElevatedButton(
           onPressed: onPressed,
           child: const Text('add'),
-        )
+        ),
       ],
-      icon: const Icon(Icons.abc_outlined),
     );
   }
 }

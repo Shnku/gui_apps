@@ -14,16 +14,26 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSwatch(
-          brightness: Brightness.dark,
-          primarySwatch: Colors.amber,
-          backgroundColor: Colors.purple,
-          accentColor: Colors.amberAccent,
-          cardColor: const Color.fromARGB(83, 51, 51, 51),
-        ),
+      // theme: ThemeData(
+      //   colorScheme: ColorScheme.fromSwatch(
+      //     brightness: Brightness.dark,
+      //     primarySwatch: Colors.amber,
+      //     backgroundColor: Colors.purple,
+      //     accentColor: Colors.amberAccent,
+      //     cardColor: Colors.black,
+      //   ),
+      //   useMaterial3: true,
+      // ),
+      //better approach ...
+      theme: ThemeData.from(
         useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.deepPurple,
+          surface: Colors.black,
+          brightness: Brightness.dark,
+          contrastLevel: BorderSide.strokeAlignOutside,
+          secondary: Colors.deepPurple.shade500,
+        ),
       ),
       home: const Mainpage(title: 'Your Tasks'),
       debugShowCheckedModeBanner: false,
