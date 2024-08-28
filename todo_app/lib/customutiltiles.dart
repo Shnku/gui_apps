@@ -39,12 +39,12 @@ class MyTile extends StatelessWidget {
           leading: Checkbox(
             value: isDone,
             onChanged: onChanged,
-            activeColor: Colors.deepPurple[300],
+            activeColor: Theme.of(context).colorScheme.secondary,
           ),
           title: Text(
             data,
             style: TextStyle(
-              fontSize: 20,
+              fontSize: 17,
               decoration:
                   isDone ? TextDecoration.lineThrough : TextDecoration.none,
             ),
@@ -70,27 +70,54 @@ class MyDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       icon: const Icon(Icons.add_task_outlined),
-      shadowColor: Colors.deepPurple[200],
+      shadowColor: Theme.of(context).colorScheme.secondary,
       insetPadding: const EdgeInsets.all(15),
       actionsPadding: const EdgeInsets.all(20),
-      actionsOverflowButtonSpacing: 15,
-      elevation: 25,
+      actionsOverflowButtonSpacing: 25,
+      elevation: 50,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15.0),
+        side: BorderSide(
+          color: Theme.of(context).colorScheme.secondary,
+          width: 0.5,
+        ),
+      ),
       actions: [
         TextField(
           controller: textcontroller,
-          // onSubmitted: (value) => onPressed,
-          // validator: (value) {
-          //   if (value == null || value.isEmpty) {
-          //     return 'Please enter some text'; // Validation message
-          //   }
-          //   return null; // Return null if the input is valid
-          // },
+          onSubmitted: (value) => onPressed,
         ),
         ElevatedButton(
           onPressed: onPressed,
           child: const Text('add'),
         ),
       ],
+    );
+  }
+}
+
+//custom dashboard for task counting.....
+class TaskDashboard extends StatelessWidget {
+  String title;
+  final int taskDone;
+
+  TaskDashboard({
+    super.key,
+    required this.taskDone,
+    required this.title,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(18.0),
+        child: Text(
+          '$title\n$taskDone',
+          textAlign: TextAlign.center,
+          textScaler: const TextScaler.linear(1.1),
+        ),
+      ),
     );
   }
 }

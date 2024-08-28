@@ -13,13 +13,15 @@ class Mainpage extends StatefulWidget {
 class _MainpageState extends State<Mainpage> {
   final _myBox = Hive.box('mydb');
   TasksDB db = TasksDB();
+  var taskDone = 0;
 
   @override
   void initState() {
-    if (_myBox.get('key') == null) {
-      db.initDb();
-    } else {
-      db.loadDb();
+    _myBox.get('key') == null ? db.initDb() : db.loadDb();
+    for (var element in db.tasksTodo) {
+      if (element[1] == true) {
+        taskDone++;
+      }
     }
     super.initState();
   }
@@ -37,20 +39,51 @@ class _MainpageState extends State<Mainpage> {
         title: Text(widget.title),
         centerTitle: true,
         backgroundColor: Colors.transparent,
+        foregroundColor: Colors.white70,
         forceMaterialTransparency: true,
       ),
-      body: ListView.builder(
-        itemCount: db.tasksTodo.length,
-        itemBuilder: (context, index) {
-          return MyTile(
-            data: db.tasksTodo[index][0],
-            isDone: db.tasksTodo[index][1],
-            onChanged: (val) => _onchange(index),
-            delete: (p0) => _deleteTile(index),
-          );
-        },
+      body: Column(
+        // mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Container(
+            height: MediaQuery.sizeOf(context).height - 320,
+            padding: const EdgeInsets.fromLTRB(5, 10, 5, 10),
+            child: ListView.builder(
+              itemCount: db.tasksTodo.length,
+              itemBuilder: (context, index) {
+                return MyTile(
+                  data: db.tasksTodo[index][0],
+                  isDone: db.tasksTodo[index][1],
+                  onChanged: (val) => _onchange(index),
+                  delete: (p0) => _deleteTile(index),
+                );
+              },
+            ),
+          ),
+          Divider(
+            indent: 20,
+            endIndent: 20,
+            height: 40,
+            color: Theme.of(context).colorScheme.secondary,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TaskDashboard(
+                title: 'T A S K _ D O N E',
+                taskDone: taskDone,
+              ),
+              TaskDashboard(
+                title: 'R E M A I N I N G',
+                taskDone: db.tasksTodo.length - taskDone,
+              )
+            ],
+          ),
+        ],
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: Theme.of(context).colorScheme.secondary,
         onPressed: _createTaskNew,
         tooltip: 'Add new task',
         icon: const Icon(Icons.add_circle_outline_outlined),
@@ -62,7 +95,9 @@ class _MainpageState extends State<Mainpage> {
 
   void _onchange(indx) {
     db.tasksTodo[indx][1] = !db.tasksTodo[indx][1];
-    setState(() {});
+    setState(() {
+      db.tasksTodo[indx][1] ? taskDone++ : taskDone--;
+    });
     db.updateDb();
   }
 
@@ -80,6 +115,7 @@ class _MainpageState extends State<Mainpage> {
   }
 
   void _deleteTile(int indx) {
+    db.tasksTodo[indx][1] ? taskDone-- : null;
     db.tasksTodo.removeAt(indx);
     setState(() {});
     db.updateDb();
