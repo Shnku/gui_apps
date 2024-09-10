@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:todo_app/customutiltiles.dart';
-import 'package:todo_app/databsee.dart';
+import 'package:todo_app/database/databsee.dart';
+
+import 'utils/customtile.dart';
+import 'utils/dashwidget.dart';
+import 'utils/dialogbox.dart';
 
 class Mainpage extends StatefulWidget {
   final String title;
@@ -49,7 +52,7 @@ class _MainpageState extends State<Mainpage> {
         // mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Container(
-            height: MediaQuery.sizeOf(context).height - 300,
+            height: MediaQuery.sizeOf(context).height - 320,
             padding: const EdgeInsets.fromLTRB(5, 10, 5, 5),
             child: ListView.builder(
               itemCount: db.tasksTodo.length,
@@ -57,6 +60,7 @@ class _MainpageState extends State<Mainpage> {
                 return MyTile(
                   data: db.tasksTodo[index][0],
                   isDone: db.tasksTodo[index][1] == DONE ? true : false,
+                  date: db.tasksTodo[index][2],
                   onChanged: (val) => _onchange(index),
                   delete: (p0) => _deleteTile(index),
                 );
@@ -130,7 +134,8 @@ class _MainpageState extends State<Mainpage> {
 
   void _saveTask() {
     if (_textcontroller.text != '') {
-      db.tasksTodo.add([_textcontroller.text, UN_DONE]); //!must be undone
+      db.tasksTodo.add([_textcontroller.text, UN_DONE, DateTime.now()]);
+      //!must be undone
       _textcontroller.clear();
       setState(() {});
       Navigator.of(context).pop();

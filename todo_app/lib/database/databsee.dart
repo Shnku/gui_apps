@@ -7,8 +7,8 @@ class TasksDB {
   //initiate.. for firat time creation..
   void initDb() {
     tasksTodo = [
-      ['fuck off', 2],
-      ['just fuck off', 1],
+      ['fuck off', 2, DateTime.now()],
+      ['just fuck off', 1, DateTime.now()],
     ];
   }
 
@@ -44,5 +44,6 @@ class TasksDB {
     if (tag! == 'r') {
       tasksTodo = (tasksTodo.reversed).toList();
     }
+    updateDb(); //needed to reflect the change permanently
   }
 }
