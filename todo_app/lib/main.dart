@@ -28,17 +28,17 @@ class MyApp extends StatelessWidget {
       theme: ThemeData.from(
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color.fromARGB(255, 182, 252, 20),
+          seedColor: const Color.fromARGB(255, 93, 252, 20),
           surface: Colors.black,
           brightness: Brightness.dark,
           contrastLevel: BorderSide.strokeAlignOutside,
-          secondary: const Color.fromARGB(255, 136, 184, 47),
+          secondary: const Color.fromARGB(255, 102, 184, 47),
           // Add text colors
           onSurface: const Color.fromARGB(255, 220, 240, 184),
-          onSurfaceVariant: const Color.fromARGB(255, 170, 204, 77),
+          onSurfaceVariant: const Color.fromARGB(255, 113, 204, 77),
         ),
       ),
-      home: const Mainpage(title: 'T o - D o'),
+      home: const Mainpage(title: 'TO - DO'),
       debugShowCheckedModeBanner: false,
     );
   }

@@ -10,6 +10,9 @@ class Mainpage extends StatefulWidget {
   State<Mainpage> createState() => _MainpageState();
 }
 
+// ignore: constant_identifier_names
+const DONE = 1, UN_DONE = 2;
+
 class _MainpageState extends State<Mainpage> {
   final _myBox = Hive.box('mydb');
   TasksDB db = TasksDB();
@@ -19,7 +22,7 @@ class _MainpageState extends State<Mainpage> {
   void initState() {
     _myBox.get('key') == null ? db.initDb() : db.loadDb();
     for (var element in db.tasksTodo) {
-      if (element[1] == true) {
+      if (element[1] == DONE) {
         taskDone++;
       }
     }
@@ -46,14 +49,14 @@ class _MainpageState extends State<Mainpage> {
         // mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Container(
-            height: MediaQuery.sizeOf(context).height - 320,
-            padding: const EdgeInsets.fromLTRB(5, 10, 5, 10),
+            height: MediaQuery.sizeOf(context).height - 300,
+            padding: const EdgeInsets.fromLTRB(5, 10, 5, 5),
             child: ListView.builder(
               itemCount: db.tasksTodo.length,
               itemBuilder: (context, index) {
                 return MyTile(
                   data: db.tasksTodo[index][0],
-                  isDone: db.tasksTodo[index][1],
+                  isDone: db.tasksTodo[index][1] == DONE ? true : false,
                   onChanged: (val) => _onchange(index),
                   delete: (p0) => _deleteTile(index),
                 );
@@ -70,11 +73,15 @@ class _MainpageState extends State<Mainpage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TaskDashboard(
-                title: 'T A S K _ D O N E',
+                onTap: () => setState(() => db.sortDb('')),
+                title: 'C O M P L E T E D',
                 taskDone: taskDone,
+                color: const Color.fromARGB(255, 96, 243, 38),
               ),
               TaskDashboard(
+                onTap: () => setState(() => db.sortDb('r')),
                 title: 'R E M A I N I N G',
+                color: const Color.fromARGB(255, 255, 0, 0),
                 taskDone: db.tasksTodo.length - taskDone,
               )
             ],
@@ -94,9 +101,9 @@ class _MainpageState extends State<Mainpage> {
   }
 
   void _onchange(indx) {
-    db.tasksTodo[indx][1] = !db.tasksTodo[indx][1];
+    db.tasksTodo[indx][1] = (db.tasksTodo[indx][1] == DONE ? UN_DONE : DONE);
     setState(() {
-      db.tasksTodo[indx][1] ? taskDone++ : taskDone--;
+      db.tasksTodo[indx][1] == DONE ? taskDone++ : taskDone--;
     });
     db.updateDb();
   }
@@ -115,7 +122,7 @@ class _MainpageState extends State<Mainpage> {
   }
 
   void _deleteTile(int indx) {
-    db.tasksTodo[indx][1] ? taskDone-- : null;
+    db.tasksTodo[indx][1] == DONE ? taskDone-- : null;
     db.tasksTodo.removeAt(indx);
     setState(() {});
     db.updateDb();
@@ -123,14 +130,19 @@ class _MainpageState extends State<Mainpage> {
 
   void _saveTask() {
     if (_textcontroller.text != '') {
-      db.tasksTodo.add([_textcontroller.text, false]);
+      db.tasksTodo.add([_textcontroller.text, UN_DONE]); //!must be undone
       _textcontroller.clear();
       setState(() {});
       Navigator.of(context).pop();
       db.updateDb();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Your task cant be empty'),
+        content: Text(
+          'Your task cant be empty',
+          textAlign: TextAlign.center,
+        ),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10))),
       ));
     }
   }

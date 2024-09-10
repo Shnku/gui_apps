@@ -4,7 +4,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 //my custom tiles..........
 class MyTile extends StatelessWidget {
   final String data;
-  final bool isDone;
+  final dynamic isDone;
   final void Function(bool?)? onChanged;
   final void Function(BuildContext)? delete;
 
@@ -45,8 +45,9 @@ class MyTile extends StatelessWidget {
             data,
             style: TextStyle(
               fontSize: 17,
-              decoration:
-                  isDone ? TextDecoration.lineThrough : TextDecoration.none,
+              decoration: isDone
+                  ? TextDecoration.lineThrough
+                  : TextDecoration.none,
             ),
           ),
         ),
@@ -55,7 +56,7 @@ class MyTile extends StatelessWidget {
   }
 }
 
-//my custom popup dialog to add task........
+// ignore: must_be_immutable //my custom popup dialog to add task........
 class MyDialog extends StatelessWidget {
   void Function()? onPressed;
   var textcontroller = TextEditingController();
@@ -98,24 +99,42 @@ class MyDialog extends StatelessWidget {
 
 //custom dashboard for task counting.....
 class TaskDashboard extends StatelessWidget {
-  String title;
+  final String title;
   final int taskDone;
+  final Color color;
+  final Function() onTap;
 
-  TaskDashboard({
+  const TaskDashboard({
     super.key,
     required this.taskDone,
     required this.title,
+    required this.color,
+    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(18.0),
-        child: Text(
-          '$title\n$taskDone',
-          textAlign: TextAlign.center,
-          textScaler: const TextScaler.linear(1.1),
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(10),
+      highlightColor: color,
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 3),
+        decoration: BoxDecoration(
+          color: color.withAlpha(20),
+          border: Border.all(color: color.withAlpha(100)),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(18.0),
+          child: Text(
+            '$title\n$taskDone',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 16,
+              color: color,
+            ),
+          ),
         ),
       ),
     );
