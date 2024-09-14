@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/home.dart';
+import 'package:tictactoe/home.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 void main() {
