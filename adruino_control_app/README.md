@@ -1,16 +1,24 @@
-# adruino_control_app
+# Arduino Light Controller App
 
-A new Flutter project.
+## Description
+The Arduino Light Controller App is a simple application that allows users to control a light connected to an Arduino board over Wi-Fi. Users can turn the light on and off with a user-friendly interface, making it easy to manage lighting remotely.
 
-## Getting Started
+## Configuration <span style="color: red;">#Important</span>
+1. Ensure your Arduino is connected to the Wi-Fi network.
+2. Update the IP address in the app to match your Arduino's IP.
+3. Configure the relay module to the correct GPIO pin on the Arduino.
 
-This project is a starting point for a Flutter application.
+## Features
+- **Wi-Fi Connectivity**: Control the light from anywhere within the Wi-Fi range.
+- **On/Off Control**: Easily turn the light on or off with a single button.
+- **User-Friendly Interface**: Simple and intuitive design for easy operation.
+- **Real-Time Feedback**: Get immediate feedback on the current state of the light.
 
-A few resources to get you started if this is your first Flutter project:
+## Screenshots
+| ![Light Controller App Screenshot](screenshot/light-controller1.png) | ![Control Interface Screenshot](screenshot/light-controller2.png) | ![Control Interface Screenshot](screenshot/light-controller3.png) |
+|:---:|:---:|:---:|
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Installation
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+To install go to releases.\
+see the [INFO.md](INFO.md) file for details & **change logs** .
