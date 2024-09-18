@@ -53,7 +53,7 @@ class MyTile extends StatelessWidget {
           ),
           subtitle: Text(
             // DateFormat('yyyy-MM-dd HH:mm:ss').format(date),
-            DateFormat('hh:mm / MM-dd').format(date),
+            DateFormat('HH:mm _ dd/MM/yy').format(date),
             textAlign: TextAlign.end,
             textScaler: const TextScaler.linear(0.7),
           ),
