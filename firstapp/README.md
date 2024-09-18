@@ -1,16 +1,24 @@
-# firstapp
+# Calculator App
 
-A new Flutter project.
+## Description
+The Calculator App is a simple and intuitive application that allows users to perform basic arithmetic operations such as addition, subtraction, multiplication, and division. The app features a user-friendly interface that makes calculations easy and efficient.
 
-## Getting Started
+**this app works on _Data Structure_ Concepts
+== _No calculator APIs uses_**
+- Input String as Expression..
+- Process string and **convert it to postfix**
+- evaluate postfix string based on **operation precedance**
 
-This project is a starting point for a Flutter application.
+## Features
+- **Basic Operations**: Perform addition, subtraction, multiplication, division, powers & decimal-point.
+- **Clear Functionality**: Easily clear the current input or reset the calculator.
+- **Green shadow Interface**: Simple layout for easy navigation and use.
 
-A few resources to get you started if this is your first Flutter project:
+## Screenshots
+| ![Calculator App Screenshot](screenshot/calculator1.png) | ![Calculator Operations Screenshot](screenshot/calculator2.png) |![Calculator App Screenshot](screenshot/calculator3.png) | 
+|:---:|:---:|:---:|
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Installation
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+To install go to releases.\
+see the [INFO.md](INFO.md) file for details & **change logs** .
