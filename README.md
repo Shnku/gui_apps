@@ -12,7 +12,7 @@ Each app serves a unique purpose and offers a set of features to help users mana
 4. [Weather App](weather_app/README.md): A simple weather app based on OpenWeatherAPI with city searching functionality.
 5. [Question Answer App](question_app/README.md): An interactive application for asking and answering science-related questions.
 6. [To-Do App](todo_app/README.md): A simple and intuitive application for managing tasks efficiently.
-7. [Arduino Controller Wifi](arduino_control_app/README.md): Basic app to interact/control arduino HIGH/LOW value through wifi connectivity.
+7. [Arduino Controller Wifi](adruino_control_app/README.md): Basic app to interact/control arduino HIGH/LOW value through wifi connectivity.
   
 
 ## Conclusion
