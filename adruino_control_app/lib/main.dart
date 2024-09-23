@@ -1,3 +1,4 @@
+import 'package:adruino_control_app/init_page.dart';
 import 'package:adruino_control_app/instruction_page.dart';
 import 'package:flutter/material.dart';
 
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
       ),
       themeMode: ThemeMode.dark,
       debugShowCheckedModeBanner: false,
-      home: const InstructionPage(),
+      home: const InitPage(),
     );
   }
 }

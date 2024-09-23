@@ -39,62 +39,76 @@ class _RootPageState extends State<InitPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       // appBar: null,
-      body: Container(
-        margin: const EdgeInsets.all(10),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Form(
-              key: _formKey,
-              child: TextFormField(
-                decoration: const InputDecoration(
-                  filled: true,
-                  fillColor: Colors.black45,
-                  labelText: labelText,
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'you must $labelText';
-                  } else if (!ipv4Regex.hasMatch(value)) {
-                    return 'That\'s not a valid IP Man';
-                  }
-                  return null;
-                },
-                onChanged: (value) {
-                  baseUrl = value;
-                  debugPrint(baseUrl);
-                },
+      body: CustomScrollView(
+        slivers: [
+          const SliverAppBar.large(
+            title: Text('How to Configure your Arduino'),
+            surfaceTintColor: Colors.black,
+            expandedHeight: 200,
+            shadowColor: Colors.black,
+            scrolledUnderElevation: 30,
+            // forceMaterialTransparency: true,
+          ),
+          SliverFillRemaining(
+            child: Container(
+              margin: const EdgeInsets.all(10),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Form(
+                    key: _formKey,
+                    child: TextFormField(
+                      decoration: const InputDecoration(
+                        filled: true,
+                        fillColor: Colors.black45,
+                        labelText: labelText,
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'you must $labelText';
+                        } else if (!ipv4Regex.hasMatch(value)) {
+                          return 'That\'s not a valid IP Man';
+                        }
+                        return null;
+                      },
+                      onChanged: (value) {
+                        baseUrl = value;
+                        debugPrint(baseUrl);
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  MaterialButton(
+                    minWidth: double.infinity,
+                    height: 50,
+                    color: Colors.blueGrey,
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        setState(() => _result = 'Processing....');
+                        _checkIP(baseUrl);
+                      }
+                    },
+                    child: const Text('Check IP And Go'),
+                  ),
+                  const SizedBox(height: 50),
+                  Text('$_result'),
+                  Visibility(
+                    visible: _result != null,
+                    child: IconButton(
+                      onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ControlPage(baseUrl: baseUrl),
+                          )),
+                      icon: const Icon(Icons.arrow_circle_right),
+                    ),
+                  )
+                ],
               ),
             ),
-            const SizedBox(height: 20),
-            MaterialButton(
-              minWidth: double.infinity,
-              height: 50,
-              color: Colors.blueGrey,
-              onPressed: () {
-                if (_formKey.currentState!.validate()) {
-                  setState(() => _result = 'Processing....');
-                  _checkIP(baseUrl);
-                }
-              },
-              child: const Text('Check IP And Go'),
-            ),
-            const SizedBox(height: 50),
-            Text('$_result'),
-            Visibility(
-              visible: _result != null,
-              child: IconButton(
-                onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ControlPage(baseUrl: baseUrl),
-                    )),
-                icon: const Icon(Icons.arrow_circle_right),
-              ),
-            )
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
