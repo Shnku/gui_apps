@@ -1,0 +1,22 @@
+{
+    "version": 1,
+    "author": "Shanku Bag",
+    "editor": "wokwi",
+    "parts": [
+        { "type": "board-esp32-devkit-c-v4", "id": "esp", "top": -19.2, "left": 24.04, "attrs": {} },
+        {
+            "type": "wokwi-led",
+            "id": "led1",
+            "top": -13.2,
+            "left": -149.8,
+            "attrs": { "color": "red" }
+        }
+    ],
+    "connections": [
+        [ "esp:TX", "$serialMonitor:RX", "", [] ],
+        [ "esp:RX", "$serialMonitor:TX", "", [] ],
+        [ "esp:12", "led1:C", "green", [ "h-163.05", "v-96" ] ],
+        [ "esp:GND.1", "led1:A", "black", [ "h0" ] ]
+    ],
+    "dependencies": {}
+}
