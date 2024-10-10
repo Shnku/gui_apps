@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class Mytheme {
   static ThemeData lightTheme = ThemeData(
-    colorScheme: ColorScheme.light(),
-    buttonTheme: ButtonThemeData(
+    colorScheme: const ColorScheme.light(),
+    buttonTheme: const ButtonThemeData(
       buttonColor: Colors.purple,
       textTheme: ButtonTextTheme.primary,
       focusColor: Colors.blueAccent,
@@ -13,23 +13,23 @@ class Mytheme {
     useMaterial3: true,
     inputDecorationTheme: InputDecorationTheme(
       border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-      labelStyle: TextStyle(color: Colors.black),
+      labelStyle: const TextStyle(color: Colors.black),
       prefixIconColor: Colors.black,
       suffixIconColor: Colors.redAccent,
-      helperStyle: TextStyle(color: Colors.black),
+      helperStyle: const TextStyle(color: Colors.black),
       helperMaxLines: 2,
-      contentPadding: EdgeInsets.all(10),
+      contentPadding: const EdgeInsets.all(10),
       isDense: true,
       filled: true,
     ),
-    appBarTheme: AppBarTheme(
+    appBarTheme: const AppBarTheme(
       backgroundColor: Colors.amberAccent,
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
-        elevation: WidgetStatePropertyAll(6),
-        backgroundColor: WidgetStatePropertyAll(Colors.purple),
-        foregroundColor: WidgetStatePropertyAll(Colors.black),
+        elevation: const WidgetStatePropertyAll(6),
+        backgroundColor: const WidgetStatePropertyAll(Colors.purple),
+        foregroundColor: const WidgetStatePropertyAll(Colors.black),
         shape: WidgetStatePropertyAll(
             BeveledRectangleBorder(borderRadius: BorderRadius.circular(10))),
       ),
@@ -37,8 +37,8 @@ class Mytheme {
   );
 
   static ThemeData darkTheme = ThemeData(
-    colorScheme: ColorScheme.dark(),
-    buttonTheme: ButtonThemeData(
+    colorScheme: const ColorScheme.dark(),
+    buttonTheme: const ButtonThemeData(
       buttonColor: Colors.amberAccent,
       textTheme: ButtonTextTheme.primary,
       focusColor: Colors.blueAccent,
@@ -48,24 +48,24 @@ class Mytheme {
     useMaterial3: true,
     inputDecorationTheme: InputDecorationTheme(
       border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-      labelStyle: TextStyle(color: Colors.white),
+      labelStyle: const TextStyle(color: Colors.white),
       prefixIconColor: Colors.white,
       suffixIconColor: Colors.redAccent,
-      helperStyle: TextStyle(color: Colors.white),
+      helperStyle: const TextStyle(color: Colors.white),
       helperMaxLines: 2,
-      contentPadding: EdgeInsets.all(10),
+      contentPadding: const EdgeInsets.all(10),
       isDense: true,
       filled: true,
     ),
-    appBarTheme: AppBarTheme(
+    appBarTheme: const AppBarTheme(
       backgroundColor: Colors.amberAccent,
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
-        backgroundColor: WidgetStatePropertyAll(Colors.deepPurpleAccent),
-        foregroundColor: WidgetStatePropertyAll(Colors.black),
-        shadowColor: WidgetStatePropertyAll(Colors.blueAccent),
-        elevation: WidgetStatePropertyAll(6),
+        backgroundColor: const WidgetStatePropertyAll(Colors.deepPurpleAccent),
+        foregroundColor: const WidgetStatePropertyAll(Colors.black),
+        shadowColor: const WidgetStatePropertyAll(Colors.blueAccent),
+        elevation: const WidgetStatePropertyAll(6),
         shape: WidgetStatePropertyAll(
             BeveledRectangleBorder(borderRadius: BorderRadius.circular(10))),
       ),

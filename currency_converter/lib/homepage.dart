@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:country_flags/country_flags.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
@@ -45,22 +46,22 @@ class _MyHomePageState extends State<MyHomePage> {
     Response response = await get(Uri.parse(
         'https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/$base.min.json'));
     if (response.statusCode == 200) {
-      print(response.body);
+      log(response.body);
     } else {
       throw ('Failed to fetch data');
     }
     Map<String, dynamic> data = jsonDecode(response.body);
-    print("\ndata is: ");
-    print(data[base]['inr']);
+    log("\ndata is: ");
+    log(data[base]['inr']);
     return data;
   }
 
   @override
   initState() {
     super.initState();
-    fieldcontrol.value = TextEditingValue(text: "1");
-    fromcontrol.value = TextEditingValue(text: "US");
-    tocontrol.value = TextEditingValue(text: "IN");
+    fieldcontrol.value = const TextEditingValue(text: "1");
+    fromcontrol.value = const TextEditingValue(text: "US");
+    tocontrol.value = const TextEditingValue(text: "IN");
     fromC = ctoc[fromcontrol.text].toString().toLowerCase();
     toC = ctoc[tocontrol.text].toString().toLowerCase();
 
@@ -70,7 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
             "${fieldcontrol.text} $fromC = ${data[fromC][toC].toStringAsFixed(5).substring(0, 5)} $toC";
       });
     }).catchError((error) {
-      print('Error fetching data: $error');
+      log('Error fetching data: $error');
       // Handle the error (e.g., set an error state)
     });
   }
@@ -83,7 +84,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // child: Scaffold(
     return Scaffold(
       appBar: AppBar(
-        leading: Icon(Icons.currency_exchange),
+        leading: const Icon(Icons.currency_exchange),
         backgroundColor: Theme.of(context).colorScheme.primary,
         title: Text(widget.title),
         elevation: BorderSide.strokeAlignOutside,
@@ -109,10 +110,10 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Container(
                 height: 50,
-                margin: EdgeInsets.symmetric(horizontal: 30),
+                margin: const EdgeInsets.symmetric(horizontal: 30),
                 child: TextField(
                   controller: fieldcontrol,
                   onTapOutside: (event) => FocusScope.of(context).unfocus(),
@@ -127,11 +128,11 @@ class _MyHomePageState extends State<MyHomePage> {
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  SizedBox(width: 20),
+                  const SizedBox(width: 20),
                   createcontainer("from", fromcontrol),
                   IconButton(
                       onPressed: () {
@@ -141,12 +142,12 @@ class _MyHomePageState extends State<MyHomePage> {
                           tocontrol.value = temp;
                         });
                       },
-                      icon: Icon(Icons.swap_calls_outlined)),
+                      icon: const Icon(Icons.swap_calls_outlined)),
                   createcontainer("to", tocontrol),
-                  SizedBox(width: 20),
+                  const SizedBox(width: 20),
                 ],
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               Text(
                 display,
                 style: Theme.of(context).textTheme.headlineMedium,
@@ -158,7 +159,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 indent: 40,
                 endIndent: 40,
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ElevatedButton(
                   onPressed: () async {
                     FocusScope.of(context).unfocus();
@@ -171,11 +172,11 @@ class _MyHomePageState extends State<MyHomePage> {
                             "${fieldcontrol.text} ${fromC.toUpperCase()} = ${(double.parse(fieldcontrol.text) * data[fromC][toC]).toStringAsFixed(2)} ${toC.toUpperCase()}";
                       });
                     } catch (error) {
-                      print('Error fetching data: $error');
+                      log('Error fetching data: $error');
                       // Handle the error (e.g., set an error state)
                     }
                   },
-                  child: Text('Convert')),
+                  child: const Text('Convert')),
             ],
           ),
         ),
@@ -224,7 +225,7 @@ class _MyHomePageState extends State<MyHomePage> {
       key,
       height: 30,
       width: 40,
-      shape: RoundedRectangle(5),
+      shape: const RoundedRectangle(5),
     ));
   }
 }
