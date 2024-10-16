@@ -1,9 +1,12 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:country_flags/country_flags.dart';
+import 'package:currency_converter/main.dart';
+import 'package:currency_converter/providermodel.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:currency_converter/currency.dart';
+import 'package:provider/provider.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -25,36 +28,36 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   // MyObject from = MyObject("india", "in", "INR", CountryFlag.fromCountryCode('in'));
   // MyObject to = MyObject("usa", "us", "USD", CountryFlag.fromCountryCode('us'));
-  String display = '0';
+  // String display = '0';
 
   TextEditingController fieldcontrol = TextEditingController();
   TextEditingController fromcontrol = TextEditingController();
   TextEditingController tocontrol = TextEditingController();
-  String fromC = '';
-  String toC = "";
+  // String fromC = '';
+  // String toC = "";
 
-  ThemeMode _themeMode = ThemeMode.system;
+  // ThemeMode _themeMode = ThemeMode.system;
 
-  void _toggleTheme(ThemeMode themeMode) {
-    setState(() {
-      _themeMode = themeMode;
-    });
-  }
+  // void _toggleTheme(ThemeMode themeMode) {
+  //   setState(() {
+  //     _themeMode = themeMode;
+  //   });
+  // }
 
-  //web fetching function.......
-  Future fetchData(String base) async {
-    Response response = await get(Uri.parse(
-        'https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/$base.min.json'));
-    if (response.statusCode == 200) {
-      log(response.body);
-    } else {
-      throw ('Failed to fetch data');
-    }
-    Map<String, dynamic> data = jsonDecode(response.body);
-    log("\ndata is: ");
-    log(data[base]['inr']);
-    return data;
-  }
+  // //web fetching function.......
+  // Future fetchData(String base) async {
+  //   Response response = await get(Uri.parse(
+  //       'https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/$base.min.json'));
+  //   if (response.statusCode == 200) {
+  //     log(response.body);
+  //   } else {
+  //     throw ('Failed to fetch data');
+  //   }
+  //   Map<String, dynamic> data = jsonDecode(response.body);
+  //   log("\ndata is: ");
+  //   log(data[base]['inr']);
+  //   return data;
+  // }
 
   @override
   initState() {
@@ -62,23 +65,21 @@ class _MyHomePageState extends State<MyHomePage> {
     fieldcontrol.value = const TextEditingValue(text: "1");
     fromcontrol.value = const TextEditingValue(text: "US");
     tocontrol.value = const TextEditingValue(text: "IN");
-    fromC = ctoc[fromcontrol.text].toString().toLowerCase();
-    toC = ctoc[tocontrol.text].toString().toLowerCase();
 
-    fetchData(fromC).then((data) {
-      setState(() {
-        display =
-            "${fieldcontrol.text} $fromC = ${data[fromC][toC].toStringAsFixed(5).substring(0, 5)} $toC";
-      });
-    }).catchError((error) {
-      log('Error fetching data: $error');
-      // Handle the error (e.g., set an error state)
-    });
+    // fetchData(fromC).then((data) {
+    //   setState(() {
+    //     display =
+    //         "${fieldcontrol.text} $fromC = ${data[fromC][toC].toStringAsFixed(5).substring(0, 5)} $toC";
+    //   });
+    // }).catchError((error) {
+    //   log('Error fetching data: $error');
+    //   // Handle the error (e.g., set an error state)
+    // });
   }
 
   @override
   Widget build(BuildContext context) {
-    bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    bool isdark = context.watch<ThemeProvider>().themeMode == ThemeMode.light;
     // return GestureDetector(
     // onTap: () => FocusScope.of(context).unfocus(),
     // child: Scaffold(
@@ -92,12 +93,8 @@ class _MyHomePageState extends State<MyHomePage> {
         toolbarHeight: 50,
         actions: [
           Switch(
-            value: isDarkMode,
-            onChanged: (isOn) {
-              isOn
-                  ? _toggleTheme(ThemeMode.dark)
-                  : _toggleTheme(ThemeMode.light);
-            },
+            value: isdark,
+            onChanged: (isOn) => context.read<ThemeProvider>().toggleTheme(),
             activeColor: Colors.white,
             inactiveThumbColor: Colors.black,
             inactiveTrackColor: Colors.grey,
@@ -135,22 +132,23 @@ class _MyHomePageState extends State<MyHomePage> {
                   const SizedBox(width: 20),
                   createcontainer("from", fromcontrol),
                   IconButton(
-                      onPressed: () {
-                        setState(() {
-                          var temp = fromcontrol.value;
-                          fromcontrol.value = tocontrol.value;
-                          tocontrol.value = temp;
-                        });
-                      },
-                      icon: const Icon(Icons.swap_calls_outlined)),
+                    onPressed: () => setState(() {
+                      var temp = fromcontrol.value;
+                      fromcontrol.value = tocontrol.value;
+                      tocontrol.value = temp;
+                    }),
+                    icon: const Icon(Icons.swap_calls_outlined),
+                  ),
                   createcontainer("to", tocontrol),
                   const SizedBox(width: 20),
                 ],
               ),
               const SizedBox(height: 30),
-              Text(
-                display,
-                style: Theme.of(context).textTheme.headlineMedium,
+              Consumer<DataProvider>(
+                builder: (ctx, value, _) => Text(
+                  value.display ?? "nothing",
+                  style: Theme.of(context).textTheme.headlineMedium,
+                ),
               ),
               Divider(
                 height: 2,
@@ -161,20 +159,25 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               const SizedBox(height: 20),
               ElevatedButton(
-                  onPressed: () async {
+                  onPressed: () {
                     FocusScope.of(context).unfocus();
-                    fromC = ctoc[fromcontrol.text].toString().toLowerCase();
-                    toC = ctoc[tocontrol.text].toString().toLowerCase();
-                    try {
-                      dynamic data = await fetchData(fromC);
-                      setState(() {
-                        display =
-                            "${fieldcontrol.text} ${fromC.toUpperCase()} = ${(double.parse(fieldcontrol.text) * data[fromC][toC]).toStringAsFixed(2)} ${toC.toUpperCase()}";
-                      });
-                    } catch (error) {
-                      log('Error fetching data: $error');
-                      // Handle the error (e.g., set an error state)
-                    }
+                    context.read<DataProvider>().doCalculate(
+                          form: fromcontrol.text,
+                          to: tocontrol.text,
+                          val: double.parse(fieldcontrol.text),
+                        );
+                    // fromC = ctoc[fromcontrol.text].toString().toLowerCase();
+                    // toC = ctoc[tocontrol.text].toString().toLowerCase();
+                    // try {
+                    //   dynamic data = await fetchData(fromC);
+                    //   setState(() {
+                    //     display =
+                    //         "${fieldcontrol.text} ${fromC.toUpperCase()} = ${(double.parse(fieldcontrol.text) * data[fromC][toC]).toStringAsFixed(2)} ${toC.toUpperCase()}";
+                    //   });
+                    // } catch (error) {
+                    //   log('Error fetching data: $error');
+                    //   // Handle the error (e.g., set an error state)
+                    // }
                   },
                   child: const Text('Convert')),
             ],
@@ -211,7 +214,7 @@ class _MyHomePageState extends State<MyHomePage> {
               .toList(),
           onSelected: (v) {
             setState(() {
-              display = ("$display+$v").toString();
+              // display = ("$display+$v").toString();
               // ico = geticon(tc.text);
             });
           },
