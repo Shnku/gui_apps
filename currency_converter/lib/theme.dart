@@ -46,6 +46,16 @@ class Mytheme {
           ),
           textStyle: const TextStyle(fontSize: 20, color: Colors.black54)),
     ),
+    dropdownMenuTheme: DropdownMenuThemeData(
+      menuStyle: MenuStyle(
+        maximumSize: Mytheme.darkTheme.dropdownMenuTheme.menuStyle?.maximumSize,
+        shape: Mytheme.darkTheme.dropdownMenuTheme.menuStyle?.shape,
+        backgroundColor: WidgetStateProperty.all(
+          const Color.fromARGB(235, 164, 184, 253),
+        ),
+        elevation: Mytheme.darkTheme.dropdownMenuTheme.menuStyle?.elevation,
+      ),
+    ),
   );
 
   static ThemeData darkTheme = ThemeData(
@@ -93,13 +103,25 @@ class Mytheme {
           ),
           textStyle: const TextStyle(fontSize: 20, color: Colors.white70)),
     ),
+    dropdownMenuTheme: DropdownMenuThemeData(
+      menuStyle: MenuStyle(
+        maximumSize: const WidgetStatePropertyAll(Size(140, 600)),
+        shape: WidgetStatePropertyAll(
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        ),
+        backgroundColor: WidgetStateProperty.all(
+          const Color.fromARGB(245, 40, 19, 86),
+        ),
+        elevation: const WidgetStatePropertyAll(80),
+      ),
+    ),
   );
 
   static BoxDecoration boxdeco = BoxDecoration(
-    color: Colors.white10,
+    color: Colors.white12,
     borderRadius: BorderRadius.circular(10),
     border: Border.all(
-      color: Colors.white.withOpacity(0.3),
+      color: Colors.white.withOpacity(0.4),
       width: 1,
     ),
   );

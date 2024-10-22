@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:country_flags/country_flags.dart';
 import 'package:currency_converter/providermodel.dart';
 import 'package:currency_converter/theme.dart';
@@ -29,6 +31,7 @@ class _MyHomePageState extends State<MyHomePage> {
     tocontrol.value = const TextEditingValue(text: "IN");
     context.read<DataProvider>().doCalculate(
         form: fromcontrol.text, to: tocontrol.text, val: fieldcontrol.text);
+    context.read<ThemeProvider>().loadTheme();
     /*
       trace of old logic..........
     */
@@ -156,24 +159,22 @@ class _MyHomePageState extends State<MyHomePage> {
                 indent: 40,
                 endIndent: 40,
               ),
-              const SizedBox(height: 20),
-              ClipRRect(
-                child: Container(
-                  decoration: Mytheme.boxdeco,
-                  margin: const EdgeInsets.all(12),
-                  padding: const EdgeInsets.fromLTRB(5, 20, 10, 3),
-                  child: AspectRatio(
-                    aspectRatio: 1.7,
-                    child: Consumer<DataProvider>(
-                      builder: (ctx, value, _) {
-                        return BarChart(
-                          getBarChartData(ctx),
-                          swapAnimationDuration:
-                              const Duration(milliseconds: 150),
-                          swapAnimationCurve: Curves.easeIn,
-                        );
-                      },
-                    ),
+              const SizedBox(height: 30),
+              Container(
+                decoration: Mytheme.boxdeco,
+                margin: const EdgeInsets.all(12),
+                padding: const EdgeInsets.fromLTRB(5, 40, 10, 10),
+                child: AspectRatio(
+                  aspectRatio: 1.5,
+                  child: Consumer<DataProvider>(
+                    builder: (ctx, value, _) {
+                      return BarChart(
+                        getBarChartData(ctx),
+                        swapAnimationDuration:
+                            const Duration(milliseconds: 150),
+                        swapAnimationCurve: Curves.easeIn,
+                      );
+                    },
                   ),
                 ),
               )

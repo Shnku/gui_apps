@@ -15,7 +15,7 @@ class DataProvider extends ChangeNotifier {
   late double _whatValue;
   double _result = 0;
   List _barDatas = [];
-  final List tags = ['usd', 'inr', 'eur', 'gpb', 'rub'];
+  final List tags = ['usd', 'inr', 'eur', 'gbp', 'rub'];
 
   //getters .........
   get data => _data;
@@ -87,7 +87,7 @@ class ThemeProvider extends ChangeNotifier {
   ThemeMode get themeMode => _themeMode;
 
   ThemeProvider() {
-    _loadTheme();
+    loadTheme();
   }
 
   void toggleTheme() async {
@@ -99,7 +99,7 @@ class ThemeProvider extends ChangeNotifier {
     prefs.setString('theme_mode', themeMode.toString());
   }
 
-  void _loadTheme() async {
+  void loadTheme() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? mode = prefs.getString('theme_mode');
     if (mode == ThemeMode.dark.toString()) {

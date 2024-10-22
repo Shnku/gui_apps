@@ -11,8 +11,14 @@ The Currency Converter App is a straightforward application that allows users to
 - **Dark and Light theme**: you can change between themes based on system theme
 
 ## Screenshots
+<details>
+  <summary>Screenshorts old</summary>
+
 | ![Currency Converter Screenshot](screenshot/currency1.png) | ![Conversion Result Screenshot](screenshot/currency2.png) | ![Currency Converter Screenshot](screenshot/currency3.png) |
 |:---:|:---:|:---:|
+</details>
+
+
 
 
 ## Installation

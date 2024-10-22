@@ -6,10 +6,34 @@ import 'package:provider/provider.dart';
 BarChartData getBarChartData(BuildContext ctx) {
   final provided = Provider.of<DataProvider>(ctx);
   List barDatas = provided.barDatas;
+  debugPrint(barDatas.toString());
   return BarChartData(
+    backgroundColor: Colors.indigo.withOpacity(0.2),
+    borderData: FlBorderData(
+        show: true,
+        border: const Border(
+          left: BorderSide(),
+          bottom: BorderSide(),
+          right: BorderSide(),
+        )),
     titlesData: FlTitlesData(
       topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-      rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+      rightTitles: const AxisTitles(
+        sideTitles: SideTitles(
+          showTitles: true,
+          reservedSize: 55,
+        ),
+      ),
+      leftTitles: const AxisTitles(
+        axisNameWidget: Card(
+          color: Color.fromARGB(24, 62, 0, 231),
+          child: Text(
+            '  TOP  CURRENCIES  COMPARE  ',
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+        axisNameSize: 40,
+      ),
       bottomTitles: AxisTitles(
         sideTitles: SideTitles(
           showTitles: true,
@@ -24,9 +48,9 @@ BarChartData getBarChartData(BuildContext ctx) {
               barRods: [
                 BarChartRodData(
                   color: Colors.white.withAlpha(150),
-                  toY: 1000 / getValue(data),
-                  fromY: getValue(data),
-                  width: 20,
+                  toY: 100 / getValue(data),
+                  // fromY: getValue(data), // it's doing wrong
+                  width: 25,
                   borderRadius: BorderRadius.circular(5),
                 ),
               ],
