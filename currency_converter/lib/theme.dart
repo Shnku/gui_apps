@@ -12,7 +12,18 @@ class Mytheme {
     brightness: Brightness.light,
     useMaterial3: true,
     inputDecorationTheme: InputDecorationTheme(
-      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10),
+        borderSide: const BorderSide(color: Colors.black38),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10),
+        borderSide: const BorderSide(color: Colors.black38),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10),
+        borderSide: const BorderSide(color: Colors.black38),
+      ),
       labelStyle: const TextStyle(color: Colors.black),
       prefixIconColor: Colors.black,
       suffixIconColor: Colors.redAccent,
@@ -21,18 +32,19 @@ class Mytheme {
       contentPadding: const EdgeInsets.all(10),
       isDense: true,
       filled: true,
+      fillColor: Colors.white.withOpacity(0.5),
     ),
     appBarTheme: const AppBarTheme(
       backgroundColor: Colors.amberAccent,
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
-      style: ButtonStyle(
-        elevation: const WidgetStatePropertyAll(6),
-        backgroundColor: const WidgetStatePropertyAll(Colors.purple),
-        foregroundColor: const WidgetStatePropertyAll(Colors.black),
-        shape: WidgetStatePropertyAll(
-            BeveledRectangleBorder(borderRadius: BorderRadius.circular(10))),
-      ),
+      style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.white70,
+          padding: const EdgeInsets.all(15),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
+          textStyle: const TextStyle(fontSize: 20, color: Colors.black54)),
     ),
   );
 
@@ -47,7 +59,18 @@ class Mytheme {
     brightness: Brightness.dark,
     useMaterial3: true,
     inputDecorationTheme: InputDecorationTheme(
-      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10),
+        borderSide: const BorderSide(color: Colors.white30),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10),
+        borderSide: const BorderSide(color: Colors.white30),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10),
+        borderSide: const BorderSide(color: Colors.white30),
+      ),
       labelStyle: const TextStyle(color: Colors.white),
       prefixIconColor: Colors.white,
       suffixIconColor: Colors.redAccent,
@@ -56,33 +79,28 @@ class Mytheme {
       contentPadding: const EdgeInsets.all(10),
       isDense: true,
       filled: true,
+      fillColor: Colors.white.withOpacity(0.2),
     ),
     appBarTheme: const AppBarTheme(
       backgroundColor: Colors.amberAccent,
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
-      style: ButtonStyle(
-        backgroundColor: const WidgetStatePropertyAll(Colors.deepPurpleAccent),
-        foregroundColor: const WidgetStatePropertyAll(Colors.black),
-        shadowColor: const WidgetStatePropertyAll(Colors.blueAccent),
-        elevation: const WidgetStatePropertyAll(6),
-        shape: WidgetStatePropertyAll(
-            BeveledRectangleBorder(borderRadius: BorderRadius.circular(10))),
-      ),
+      style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.white.withOpacity(0.21),
+          padding: const EdgeInsets.all(15),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
+          textStyle: const TextStyle(fontSize: 20, color: Colors.white70)),
     ),
   );
 
-  // decoration: BoxDecoration(
-  //   borderRadius: BorderRadius.circular(10),
-  //   border: Border.all(color: Colors.black),
-  //   color: c,
-  //   boxShadow: [
-  //     BoxShadow(
-  //       color: Colors.grey.withOpacity(0.5),
-  //       spreadRadius: 5,
-  //       blurRadius: 7,
-  //       offset: Offset(0, 5), // changes position of shadow
-  //     ),
-  //   ],
-  // ),
+  static BoxDecoration boxdeco = BoxDecoration(
+    color: Colors.white10,
+    borderRadius: BorderRadius.circular(10),
+    border: Border.all(
+      color: Colors.white.withOpacity(0.3),
+      width: 1,
+    ),
+  );
 }

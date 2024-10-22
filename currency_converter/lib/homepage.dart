@@ -1,12 +1,12 @@
-import 'dart:convert';
-import 'dart:developer';
 import 'package:country_flags/country_flags.dart';
-import 'package:currency_converter/main.dart';
 import 'package:currency_converter/providermodel.dart';
+import 'package:currency_converter/theme.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 import 'package:currency_converter/currency.dart';
 import 'package:provider/provider.dart';
+
+import 'barchartconfig.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -16,48 +16,10 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-// class MyObject {
-//   String countryname;
-//   String countrycode;
-//   String currency;
-//   CountryFlag image;
-//   MyObject.empty() : this('', '', '', CountryFlag.fromCountryCode(''));
-//   MyObject(this.countryname, this.countrycode, this.currency, this.image);
-// }
-
 class _MyHomePageState extends State<MyHomePage> {
-  // MyObject from = MyObject("india", "in", "INR", CountryFlag.fromCountryCode('in'));
-  // MyObject to = MyObject("usa", "us", "USD", CountryFlag.fromCountryCode('us'));
-  // String display = '0';
-
   TextEditingController fieldcontrol = TextEditingController();
   TextEditingController fromcontrol = TextEditingController();
   TextEditingController tocontrol = TextEditingController();
-  // String fromC = '';
-  // String toC = "";
-
-  // ThemeMode _themeMode = ThemeMode.system;
-
-  // void _toggleTheme(ThemeMode themeMode) {
-  //   setState(() {
-  //     _themeMode = themeMode;
-  //   });
-  // }
-
-  // //web fetching function.......
-  // Future fetchData(String base) async {
-  //   Response response = await get(Uri.parse(
-  //       'https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/$base.min.json'));
-  //   if (response.statusCode == 200) {
-  //     log(response.body);
-  //   } else {
-  //     throw ('Failed to fetch data');
-  //   }
-  //   Map<String, dynamic> data = jsonDecode(response.body);
-  //   log("\ndata is: ");
-  //   log(data[base]['inr']);
-  //   return data;
-  // }
 
   @override
   initState() {
@@ -65,7 +27,11 @@ class _MyHomePageState extends State<MyHomePage> {
     fieldcontrol.value = const TextEditingValue(text: "1");
     fromcontrol.value = const TextEditingValue(text: "US");
     tocontrol.value = const TextEditingValue(text: "IN");
-
+    context.read<DataProvider>().doCalculate(
+        form: fromcontrol.text, to: tocontrol.text, val: fieldcontrol.text);
+    /*
+      trace of old logic..........
+    */
     // fetchData(fromC).then((data) {
     //   setState(() {
     //     display =
@@ -73,41 +39,58 @@ class _MyHomePageState extends State<MyHomePage> {
     //   });
     // }).catchError((error) {
     //   log('Error fetching data: $error');
-    //   // Handle the error (e.g., set an error state)
     // });
   }
 
   @override
   Widget build(BuildContext context) {
-    bool isdark = context.watch<ThemeProvider>().themeMode == ThemeMode.light;
+    bool isdark = context.watch<ThemeProvider>().themeMode == ThemeMode.dark;
     // return GestureDetector(
     // onTap: () => FocusScope.of(context).unfocus(),
     // child: Scaffold(
     return Scaffold(
+      extendBody: false,
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         leading: const Icon(Icons.currency_exchange),
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         title: Text(widget.title),
-        elevation: BorderSide.strokeAlignOutside,
         centerTitle: true,
         toolbarHeight: 50,
         actions: [
           Switch(
             value: isdark,
             onChanged: (isOn) => context.read<ThemeProvider>().toggleTheme(),
-            activeColor: Colors.white,
-            inactiveThumbColor: Colors.black,
-            inactiveTrackColor: Colors.grey,
-            activeTrackColor: Colors.black,
+            activeColor: Colors.deepPurple[100],
+            inactiveThumbColor: Colors.purple[200],
+            inactiveTrackColor: Colors.blue[200],
+            activeTrackColor: Colors.indigo[500],
           )
         ],
       ),
       body: SingleChildScrollView(
-        child: Center(
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: !isdark
+                  ? [
+                      const Color.fromARGB(166, 89, 180, 255),
+                      const Color.fromARGB(255, 219, 120, 237),
+                    ]
+                  : [
+                      const Color.fromARGB(255, 7, 1, 90),
+                      const Color.fromARGB(255, 93, 2, 121),
+                    ],
+              begin: Alignment.topLeft, // Gradient start point
+              end: Alignment.bottomRight, // Gradient end point
+            ),
+          ),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              const SizedBox(height: 20),
+              const SizedBox(height: 120),
               Container(
                 height: 50,
                 margin: const EdgeInsets.symmetric(horizontal: 30),
@@ -126,60 +109,74 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
               const SizedBox(height: 30),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  const SizedBox(width: 20),
-                  createcontainer("from", fromcontrol),
-                  IconButton(
-                    onPressed: () => setState(() {
-                      var temp = fromcontrol.value;
-                      fromcontrol.value = tocontrol.value;
-                      tocontrol.value = temp;
-                    }),
-                    icon: const Icon(Icons.swap_calls_outlined),
-                  ),
-                  createcontainer("to", tocontrol),
-                  const SizedBox(width: 20),
-                ],
+              Flexible(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    const SizedBox(width: 20),
+                    createcontainer("from", fromcontrol),
+                    IconButton(
+                      onPressed: () => setState(() {
+                        var temp = fromcontrol.value;
+                        fromcontrol.value = tocontrol.value;
+                        tocontrol.value = temp;
+                        context.read<DataProvider>().doCalculate(
+                            form: fromcontrol.text,
+                            to: tocontrol.text,
+                            val: fieldcontrol.text);
+                      }),
+                      icon: const Icon(Icons.swap_calls_outlined),
+                    ),
+                    createcontainer("to", tocontrol),
+                    const SizedBox(width: 20),
+                  ],
+                ),
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 40),
+              ElevatedButton(
+                onPressed: () {
+                  FocusScope.of(context).unfocus();
+                  context.read<DataProvider>().doCalculate(
+                      form: fromcontrol.text,
+                      to: tocontrol.text,
+                      val: fieldcontrol.text);
+                },
+                child: const Text('C O N V E R T'),
+              ),
+              const SizedBox(height: 40),
               Consumer<DataProvider>(
                 builder: (ctx, value, _) => Text(
                   value.display ?? "nothing",
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
               ),
-              Divider(
-                height: 2,
-                color: Theme.of(context).primaryColor,
-                thickness: 2,
+              const Divider(
+                height: 5,
+                thickness: 0.4,
                 indent: 40,
                 endIndent: 40,
               ),
               const SizedBox(height: 20),
-              ElevatedButton(
-                  onPressed: () {
-                    FocusScope.of(context).unfocus();
-                    context.read<DataProvider>().doCalculate(
-                          form: fromcontrol.text,
-                          to: tocontrol.text,
-                          val: double.parse(fieldcontrol.text),
+              ClipRRect(
+                child: Container(
+                  decoration: Mytheme.boxdeco,
+                  margin: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.fromLTRB(5, 20, 10, 3),
+                  child: AspectRatio(
+                    aspectRatio: 1.7,
+                    child: Consumer<DataProvider>(
+                      builder: (ctx, value, _) {
+                        return BarChart(
+                          getBarChartData(ctx),
+                          swapAnimationDuration:
+                              const Duration(milliseconds: 150),
+                          swapAnimationCurve: Curves.easeIn,
                         );
-                    // fromC = ctoc[fromcontrol.text].toString().toLowerCase();
-                    // toC = ctoc[tocontrol.text].toString().toLowerCase();
-                    // try {
-                    //   dynamic data = await fetchData(fromC);
-                    //   setState(() {
-                    //     display =
-                    //         "${fieldcontrol.text} ${fromC.toUpperCase()} = ${(double.parse(fieldcontrol.text) * data[fromC][toC]).toStringAsFixed(2)} ${toC.toUpperCase()}";
-                    //   });
-                    // } catch (error) {
-                    //   log('Error fetching data: $error');
-                    //   // Handle the error (e.g., set an error state)
-                    // }
-                  },
-                  child: const Text('Convert')),
+                      },
+                    ),
+                  ),
+                ),
+              )
             ],
           ),
         ),
@@ -193,30 +190,34 @@ class _MyHomePageState extends State<MyHomePage> {
       // width: 130,
       // height: 60,
       child: (String txt, TextEditingController tc) {
-        return DropdownMenu(
-          controller: tc,
-          hintText: txt,
-          width: 140,
-          leadingIcon: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: geticon(tc.text),
-          ),
-          label: Text(txt),
-          inputDecorationTheme: Theme.of(context).inputDecorationTheme,
-          dropdownMenuEntries: ctoc.keys
-              .map(
-                (e) => DropdownMenuEntry(
-                  value: e,
-                  label: e,
-                  leadingIcon: geticon(e),
-                ),
-              )
-              .toList(),
-          onSelected: (v) {
-            setState(() {
-              // display = ("$display+$v").toString();
-              // ico = geticon(tc.text);
-            });
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return DropdownMenu(
+              controller: tc,
+              hintText: txt,
+              width: 140,
+              leadingIcon: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: geticon(tc.text),
+              ),
+              label: Text(txt),
+              inputDecorationTheme: Theme.of(context).inputDecorationTheme,
+              dropdownMenuEntries: ctoc.keys
+                  .map(
+                    (e) => DropdownMenuEntry(
+                      value: e,
+                      label: e,
+                      leadingIcon: geticon(e),
+                    ),
+                  )
+                  .toList(),
+              onSelected: (v) {
+                setState(() {
+                  // display = ("$display+$v").toString();
+                  // ico = geticon(tc.text);
+                });
+              },
+            );
           },
         );
       }(txt, tc),
