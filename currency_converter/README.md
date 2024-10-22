@@ -7,8 +7,9 @@ The Currency Converter App is a straightforward application that allows users to
 - **Currency Selection**: Choose from a list of available currencies for conversion.
 - **Real-Time Conversion**: Get up-to-date conversion rates and results instantly.
 - **User-Friendly Interface**: Simple and intuitive design for easy navigation.
-- **Swapping Button Support**: you can exchange between to-currency and from-currency 
-- **Dark and Light theme**: you can change between themes based on system theme
+- **Swapping Button Support**: you can exchange between to-currency and from-currency .
+- **Dark and Light theme**: you can change between themes based on system theme.
+- **Comparison Chart**: A comparison chart is shown with top currencies in comparison overview.
 
 ## Screenshots
 <details>
@@ -18,7 +19,8 @@ The Currency Converter App is a straightforward application that allows users to
 |:---:|:---:|:---:|
 </details>
 
-
+| ![Currency Converter Screenshot](screenshot/currency21.png) | ![Conversion Result Screenshot](screenshot/currency22.png) | ![Currency Converter Screenshot](screenshot/currency23.png) |
+|:---:|:---:|:---:|
 
 
 ## Installation
