@@ -1,11 +1,10 @@
-import 'dart:ui';
-
 import 'package:country_flags/country_flags.dart';
 import 'package:currency_converter/providermodel.dart';
 import 'package:currency_converter/theme.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:currency_converter/currency.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 
 import 'barchartconfig.dart';
@@ -22,6 +21,7 @@ class _MyHomePageState extends State<MyHomePage> {
   TextEditingController fieldcontrol = TextEditingController();
   TextEditingController fromcontrol = TextEditingController();
   TextEditingController tocontrol = TextEditingController();
+  BannerAd? _bannerAd;
 
   @override
   initState() {
@@ -32,6 +32,7 @@ class _MyHomePageState extends State<MyHomePage> {
     context.read<DataProvider>().doCalculate(
         form: fromcontrol.text, to: tocontrol.text, val: fieldcontrol.text);
     context.read<ThemeProvider>().loadTheme();
+    _loadAd();
     /*
       trace of old logic..........
     */
@@ -43,6 +44,12 @@ class _MyHomePageState extends State<MyHomePage> {
     // }).catchError((error) {
     //   log('Error fetching data: $error');
     // });
+  }
+
+  @override
+  void dispose() {
+    _bannerAd?.dispose();
+    super.dispose();
   }
 
   @override
@@ -58,8 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
         leading: const Icon(Icons.currency_exchange),
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: Text(widget.title),
-        centerTitle: true,
+        title: Text(widget.title, textScaler: const TextScaler.linear(0.85)),
         toolbarHeight: 50,
         actions: [
           Switch(
@@ -83,8 +89,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       const Color.fromARGB(255, 219, 120, 237),
                     ]
                   : [
-                      const Color.fromARGB(255, 7, 1, 90),
-                      const Color.fromARGB(255, 93, 2, 121),
+                      const Color.fromARGB(166, 0, 21, 80),
+                      const Color.fromARGB(155, 99, 0, 117),
                     ],
               begin: Alignment.topLeft, // Gradient start point
               end: Alignment.bottomRight, // Gradient end point
@@ -111,7 +117,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 25),
               Flexible(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -144,9 +150,12 @@ class _MyHomePageState extends State<MyHomePage> {
                       to: tocontrol.text,
                       val: fieldcontrol.text);
                 },
-                child: const Text('C O N V E R T'),
+                child: const Text(
+                  'C O N V E R T',
+                  textScaler: TextScaler.linear(0.87),
+                ),
               ),
-              const SizedBox(height: 40),
+              const SizedBox(height: 35),
               Consumer<DataProvider>(
                 builder: (ctx, value, _) => Text(
                   value.display ?? "nothing",
@@ -159,7 +168,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 indent: 40,
                 endIndent: 40,
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 20),
               Container(
                 decoration: Mytheme.boxdeco,
                 margin: const EdgeInsets.all(12),
@@ -177,7 +186,23 @@ class _MyHomePageState extends State<MyHomePage> {
                     },
                   ),
                 ),
-              )
+              ),
+              const Spacer(),
+              Card.outlined(
+                color: Colors.white.withOpacity(0.25),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    side: const BorderSide(color: Colors.white60)),
+                elevation: 0,
+                child: SizedBox(
+                  width: 390,
+                  height: 75,
+                  child: _bannerAd == null // Nothing to render yet.
+                      ? const SizedBox()
+                      : AdWidget(ad: _bannerAd!), // The actual ad.
+                ),
+              ),
+              const SizedBox(height: 7),
             ],
           ),
         ),
@@ -232,5 +257,31 @@ class _MyHomePageState extends State<MyHomePage> {
       width: 40,
       shape: const RoundedRectangle(5),
     ));
+  }
+
+  /// Loads a banner ad.
+  void _loadAd() {
+    final bannerAd = BannerAd(
+      size: AdSize.fullBanner,
+      adUnitId: 'ca-app-pub-3940256099942544/6300978111',
+      request: const AdRequest(),
+      listener: BannerAdListener(
+        // Called when an ad is successfully received.
+        onAdLoaded: (ad) {
+          if (!mounted) {
+            ad.dispose();
+            return;
+          }
+          setState(() => _bannerAd = ad as BannerAd);
+        },
+        // Called when an ad request failed.
+        onAdFailedToLoad: (ad, error) {
+          debugPrint('BannerAd failed to load: $error');
+          ad.dispose();
+        },
+      ),
+    );
+    // Start loading.
+    bannerAd.load();
   }
 }

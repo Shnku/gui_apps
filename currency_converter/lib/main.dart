@@ -1,10 +1,15 @@
+import 'dart:async';
+
 import 'package:currency_converter/providermodel.dart';
 import 'package:flutter/material.dart';
 import 'package:currency_converter/homepage.dart';
 import 'package:currency_converter/theme.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  unawaited(MobileAds.instance.initialize());
   runApp(const MyApp());
 }
 
@@ -26,7 +31,7 @@ class MyApp extends StatelessWidget {
             title: 'Currency Converter',
             theme: Mytheme.lightTheme,
             darkTheme: Mytheme.darkTheme,
-            home: const MyHomePage(title: 'Convert Currency'),
+            home: const MyHomePage(title: 'C O N V E R T - C U R R E N C Y'),
             debugShowCheckedModeBanner: false,
           );
         },
