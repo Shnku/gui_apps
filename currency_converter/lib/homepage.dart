@@ -225,8 +225,8 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
         ),
-        Positioned(
-          bottom: 2.0,
+        Align(
+          alignment: Alignment.bottomCenter,
           child: SizedBox(
             width: AdSize.fullBanner.width.toDouble(),
             height: AdSize.fullBanner.height.toDouble(),
