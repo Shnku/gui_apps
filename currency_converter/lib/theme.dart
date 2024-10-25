@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class Mytheme {
   static ThemeData lightTheme = ThemeData(
-    colorScheme: ColorScheme.light(),
-    buttonTheme: ButtonThemeData(
+    colorScheme: const ColorScheme.light(),
+    buttonTheme: const ButtonThemeData(
       buttonColor: Colors.purple,
       textTheme: ButtonTextTheme.primary,
       focusColor: Colors.blueAccent,
@@ -12,33 +12,55 @@ class Mytheme {
     brightness: Brightness.light,
     useMaterial3: true,
     inputDecorationTheme: InputDecorationTheme(
-      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-      labelStyle: TextStyle(color: Colors.black),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10),
+        borderSide: const BorderSide(color: Colors.black38),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10),
+        borderSide: const BorderSide(color: Colors.black38),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10),
+        borderSide: const BorderSide(color: Colors.black38),
+      ),
+      labelStyle: const TextStyle(color: Colors.black),
       prefixIconColor: Colors.black,
       suffixIconColor: Colors.redAccent,
-      helperStyle: TextStyle(color: Colors.black),
+      helperStyle: const TextStyle(color: Colors.black),
       helperMaxLines: 2,
-      contentPadding: EdgeInsets.all(10),
+      contentPadding: const EdgeInsets.all(10),
       isDense: true,
       filled: true,
+      fillColor: Colors.white.withOpacity(0.5),
     ),
-    appBarTheme: AppBarTheme(
+    appBarTheme: const AppBarTheme(
       backgroundColor: Colors.amberAccent,
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
-      style: ButtonStyle(
-        elevation: WidgetStatePropertyAll(6),
-        backgroundColor: WidgetStatePropertyAll(Colors.purple),
-        foregroundColor: WidgetStatePropertyAll(Colors.black),
-        shape: WidgetStatePropertyAll(
-            BeveledRectangleBorder(borderRadius: BorderRadius.circular(10))),
+      style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.white70,
+          padding: const EdgeInsets.all(15),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
+          textStyle: const TextStyle(fontSize: 20, color: Colors.black54)),
+    ),
+    dropdownMenuTheme: DropdownMenuThemeData(
+      menuStyle: MenuStyle(
+        maximumSize: Mytheme.darkTheme.dropdownMenuTheme.menuStyle?.maximumSize,
+        shape: Mytheme.darkTheme.dropdownMenuTheme.menuStyle?.shape,
+        backgroundColor: WidgetStateProperty.all(
+          const Color.fromARGB(235, 164, 184, 253),
+        ),
+        elevation: Mytheme.darkTheme.dropdownMenuTheme.menuStyle?.elevation,
       ),
     ),
   );
 
   static ThemeData darkTheme = ThemeData(
-    colorScheme: ColorScheme.dark(),
-    buttonTheme: ButtonThemeData(
+    colorScheme: const ColorScheme.dark(),
+    buttonTheme: const ButtonThemeData(
       buttonColor: Colors.amberAccent,
       textTheme: ButtonTextTheme.primary,
       focusColor: Colors.blueAccent,
@@ -47,42 +69,60 @@ class Mytheme {
     brightness: Brightness.dark,
     useMaterial3: true,
     inputDecorationTheme: InputDecorationTheme(
-      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-      labelStyle: TextStyle(color: Colors.white),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10),
+        borderSide: const BorderSide(color: Colors.white30),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10),
+        borderSide: const BorderSide(color: Colors.white30),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10),
+        borderSide: const BorderSide(color: Colors.white30),
+      ),
+      labelStyle: const TextStyle(color: Colors.white),
       prefixIconColor: Colors.white,
       suffixIconColor: Colors.redAccent,
-      helperStyle: TextStyle(color: Colors.white),
+      helperStyle: const TextStyle(color: Colors.white),
       helperMaxLines: 2,
-      contentPadding: EdgeInsets.all(10),
+      contentPadding: const EdgeInsets.all(10),
       isDense: true,
       filled: true,
+      fillColor: Colors.white.withOpacity(0.2),
     ),
-    appBarTheme: AppBarTheme(
+    appBarTheme: const AppBarTheme(
       backgroundColor: Colors.amberAccent,
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
-      style: ButtonStyle(
-        backgroundColor: WidgetStatePropertyAll(Colors.deepPurpleAccent),
-        foregroundColor: WidgetStatePropertyAll(Colors.black),
-        shadowColor: WidgetStatePropertyAll(Colors.blueAccent),
-        elevation: WidgetStatePropertyAll(6),
+      style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.white.withOpacity(0.21),
+          padding: const EdgeInsets.all(15),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
+          textStyle: const TextStyle(fontSize: 20, color: Colors.white70)),
+    ),
+    dropdownMenuTheme: DropdownMenuThemeData(
+      menuStyle: MenuStyle(
+        maximumSize: const WidgetStatePropertyAll(Size(140, 600)),
         shape: WidgetStatePropertyAll(
-            BeveledRectangleBorder(borderRadius: BorderRadius.circular(10))),
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        ),
+        backgroundColor: WidgetStateProperty.all(
+          const Color.fromARGB(245, 40, 19, 86),
+        ),
+        elevation: const WidgetStatePropertyAll(80),
       ),
     ),
   );
 
-  // decoration: BoxDecoration(
-  //   borderRadius: BorderRadius.circular(10),
-  //   border: Border.all(color: Colors.black),
-  //   color: c,
-  //   boxShadow: [
-  //     BoxShadow(
-  //       color: Colors.grey.withOpacity(0.5),
-  //       spreadRadius: 5,
-  //       blurRadius: 7,
-  //       offset: Offset(0, 5), // changes position of shadow
-  //     ),
-  //   ],
-  // ),
+  static BoxDecoration boxdeco = BoxDecoration(
+    color: Colors.white12,
+    borderRadius: BorderRadius.circular(10),
+    border: Border.all(
+      color: Colors.white.withOpacity(0.4),
+      width: 1,
+    ),
+  );
 }

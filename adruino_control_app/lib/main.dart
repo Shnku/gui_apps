@@ -1,5 +1,4 @@
 import 'package:adruino_control_app/init_page.dart';
-import 'package:adruino_control_app/instruction_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
