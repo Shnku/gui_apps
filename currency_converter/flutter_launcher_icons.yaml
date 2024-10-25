@@ -8,7 +8,7 @@ flutter_launcher_icons:
   adaptive_icon_background: "#FFFFFF"
   adaptive_icon_foreground: "assets/icon/icon.png"
   # adaptive_icon_monochrome: "assets/icon/monochrome.png"
-  ios: true
+  ios: false
   # image_path_ios: "assets/icon/icon.png"
   remove_alpha_channel_ios: true
   # image_path_ios_dark_transparent: "assets/icon/icon_dark.png"
@@ -27,5 +27,5 @@ flutter_launcher_icons:
     icon_size: 48 # min:48, max:256, default: 48
 
   macos:
-    generate: true
+    generate: false
     image_path: "assets/icon/icon.png"

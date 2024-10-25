@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 BarChartData getBarChartData(BuildContext ctx) {
   final provided = Provider.of<DataProvider>(ctx);
   List barDatas = provided.barDatas;
-  debugPrint(barDatas.toString());
+  // debugPrint(barDatas.toString());
   return BarChartData(
     backgroundColor: Colors.indigo.withOpacity(0.2),
     borderData: FlBorderData(
@@ -22,23 +22,23 @@ BarChartData getBarChartData(BuildContext ctx) {
         sideTitles: SideTitles(
           showTitles: true,
           reservedSize: 55,
+          maxIncluded: false,
         ),
       ),
       leftTitles: const AxisTitles(
         axisNameWidget: Card(
           color: Color.fromARGB(24, 62, 0, 231),
-          child: Text(
-            '  TOP  CURRENCIES  COMPARE  ',
-            style: TextStyle(color: Colors.white),
-          ),
+          child: Text(' Compare  Most-Traded Currencies ',
+              style: TextStyle(
+                  color: Colors.white, fontSize: 12, letterSpacing: 1)),
         ),
         axisNameSize: 40,
       ),
       bottomTitles: AxisTitles(
         sideTitles: SideTitles(
           showTitles: true,
-          getTitlesWidget: (value, meta) =>
-              getBottomTitles(value, meta, provided.to, provided.tags),
+          getTitlesWidget: (value, meta) => getBottomTitles(
+              value, meta, provided.to, provided.form, provided.tags),
         ),
       ),
     ),
@@ -48,7 +48,7 @@ BarChartData getBarChartData(BuildContext ctx) {
               barRods: [
                 BarChartRodData(
                   color: Colors.white.withAlpha(150),
-                  toY: 100 / getValue(data),
+                  toY: 1 / getValue(data),
                   // fromY: getValue(data), // it's doing wrong
                   width: 25,
                   borderRadius: BorderRadius.circular(5),
@@ -59,7 +59,8 @@ BarChartData getBarChartData(BuildContext ctx) {
   );
 }
 
-Widget getBottomTitles(double value, TitleMeta meta, var ctx, final tag) {
+Widget getBottomTitles(
+    double value, TitleMeta meta, var ctx, var ftx, final tag) {
   Widget text;
   switch (value.toInt()) {
     case 0:
@@ -79,6 +80,9 @@ Widget getBottomTitles(double value, TitleMeta meta, var ctx, final tag) {
       break;
     case 5:
       text = Text(tag[4].toString().toUpperCase());
+      break;
+    case 6:
+      text = Text(ftx.toString().toUpperCase());
       break;
     default:
       text = const Text('N');

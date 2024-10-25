@@ -33,6 +33,8 @@ class MyApp extends StatelessWidget {
             darkTheme: Mytheme.darkTheme,
             home: const MyHomePage(title: 'C O N V E R T - C U R R E N C Y'),
             debugShowCheckedModeBanner: false,
+            themeAnimationDuration: const Duration(microseconds: 100),
+            themeAnimationCurve: TreeSliver.defaultAnimationCurve,
           );
         },
       ),

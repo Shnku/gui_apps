@@ -15,7 +15,7 @@ class DataProvider extends ChangeNotifier {
   late double _whatValue;
   double _result = 0;
   List _barDatas = [];
-  final List tags = ['usd', 'inr', 'eur', 'gbp', 'rub'];
+  final List tags = ['usd', 'inr', 'eur', 'gbp', 'jpy'];
 
   //getters .........
   get data => _data;
@@ -51,7 +51,6 @@ class DataProvider extends ChangeNotifier {
     required String form,
     String val = '1',
   }) async {
-    _display = "calculating";
     _fromC = ctoc[form].toString().toLowerCase();
     _toC = ctoc[to].toString().toLowerCase();
     _whatValue = double.parse(val);
@@ -63,6 +62,7 @@ class DataProvider extends ChangeNotifier {
           "$val ${_fromC.toUpperCase()} = ${_result.toStringAsFixed(2)} ${_toC.toUpperCase()}";
     } catch (error) {
       log('Error occurs ==: $error');
+      rethrow;
     }
     notifyListeners();
   }
@@ -70,12 +70,14 @@ class DataProvider extends ChangeNotifier {
 //set barchart data function..........
   void setBarData() async {
     _barDatas = [
-      {'x': 0, 'id': _toC, 'y': _data[_fromC][_toC]},
+      if (!tags.contains(_toC)) {'x': 0, 'id': _toC, 'y': _data[_fromC][_toC]},
       {'x': 1, 'id': tags[0], 'y': _data[_fromC][tags[0]]},
       {'x': 2, 'id': tags[1], 'y': _data[_fromC][tags[1]]},
       {'x': 3, 'id': tags[2], 'y': _data[_fromC][tags[2]]},
       {'x': 4, 'id': tags[3], 'y': _data[_fromC][tags[3]]},
       {'x': 5, 'id': tags[4], 'y': _data[_fromC][tags[4]]},
+      if (!tags.contains(_fromC))
+        {'x': 6, 'id': _toC, 'y': _data[_fromC][_fromC]},
     ];
     notifyListeners();
   }
@@ -110,7 +112,6 @@ class ThemeProvider extends ChangeNotifier {
     notifyListeners();
   }
 }
-
 
 // class MyObject {
 //   String countryname;
