@@ -1,7 +1,9 @@
+import 'package:expanse_tracker/provider/expanse_provider.dart';
 import 'package:expanse_tracker/widgets/add_trans_botsht.dart';
 import 'package:expanse_tracker/widgets/main_card.dart';
 import 'package:expanse_tracker/widgets/trans_tiles.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -13,6 +15,9 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
+    TransactionProvider transactionProvider = Provider.of<TransactionProvider>(
+      context,
+    );
     return Scaffold(
       appBar: AppBar(title: const Text('Expanse Tracker')),
       body: Column(
@@ -21,7 +26,7 @@ class _MainPageState extends State<MainPage> {
           MainCard(
             data: {
               "icon": Icons.account_balance_wallet,
-              "value": "\$5000",
+              "value": transactionProvider.totalBalance.toStringAsFixed(2),
               "label": "Total Balance",
               "change": "+\$200",
             },
@@ -29,8 +34,13 @@ class _MainPageState extends State<MainPage> {
           Flexible(
             child: ListView.builder(
               shrinkWrap: true,
-              itemCount: 100,
-              itemBuilder: (context, index) => TransactionTile(),
+              itemCount: transactionProvider.transaction_list.length,
+              itemBuilder: (context, index) => ListTile(
+                title: Text(transactionProvider.transaction_list[index].title),
+                subtitle: Text(
+                  "\$${transactionProvider.transaction_list[index].amount.toStringAsFixed(2)}",
+                ),
+              ),
             ),
           ),
           const Center(child: Text('Hello World')),
