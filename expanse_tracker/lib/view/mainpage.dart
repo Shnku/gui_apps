@@ -35,10 +35,20 @@ class _MainPageState extends State<MainPage> {
             child: ListView.builder(
               shrinkWrap: true,
               itemCount: transactionProvider.transaction_list.length,
-              itemBuilder: (context, index) => ListTile(
+              itemBuilder: (context, index) => TransactionTile(
                 title: Text(transactionProvider.transaction_list[index].title),
                 subtitle: Text(
                   "\$${transactionProvider.transaction_list[index].amount.toStringAsFixed(2)}",
+                ),
+                trailing: Text(
+                  transactionProvider.transaction_list[index].isDeposit
+                      ? '+\$${transactionProvider.transaction_list[index].amount.toStringAsFixed(2)}'
+                      : '-\$${transactionProvider.transaction_list[index].amount.toStringAsFixed(2)}',
+                  style: TextStyle(
+                    color: transactionProvider.transaction_list[index].isDeposit
+                        ? Colors.green
+                        : Colors.red,
+                  ),
                 ),
               ),
             ),

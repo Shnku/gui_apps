@@ -22,7 +22,7 @@ class _AddTransactionState extends State<AddTransaction> {
       onClosing: () {},
       builder: (BuildContext context) {
         return Container(
-          height: 300,
+          height: 450,
           padding: const EdgeInsets.all(16),
           child: Container(
             padding: EdgeInsets.all(25),
@@ -38,15 +38,29 @@ class _AddTransactionState extends State<AddTransaction> {
                   controller: t2,
                   keyboardType: TextInputType.number,
                 ),
-                Spacer(flex: 2),
+                Spacer(flex: 4),
+                Wrap(
+                  spacing: 5.0,
+                  children: List<Widget>.generate(3, (int index) {
+                    var _value;
+                    return ChoiceChip(
+                      label: Text('Item $index'),
+                      selected: _value == index,
+                      onSelected: (bool selected) {
+                        setState(() {
+                          _value = selected ? index : null;
+                        });
+                      },
+                    );
+                  }).toList(),
+                ),
+                Spacer(flex: 4),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     minimumSize: const Size.fromHeight(50),
                   ),
                   onPressed: () {
-                    // pop context
                     Navigator.pop(context);
-                    // Add transaction logic here
                     transactionProvider.newTransaction(
                       Transaction(
                         title: t1.text,

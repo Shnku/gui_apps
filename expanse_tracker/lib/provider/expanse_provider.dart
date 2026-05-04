@@ -1,7 +1,9 @@
 import 'package:expanse_tracker/models/transaction.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class TransactionProvider with ChangeNotifier {
+  final _transactionBox = Hive.box('transaction_box');
   final List<Transaction> _transaction_list = [];
 
   List<Transaction> get transaction_list => _transaction_list;
@@ -21,6 +23,10 @@ class TransactionProvider with ChangeNotifier {
   }
 
   double get totalBalance => totalDeposit - totalWithdraw;
+
+  void refreshLocalstorage() {
+    _transactionBox.clear();
+  }
 
   void newTransaction(Transaction transaction) {
     _transaction_list.add(transaction);
