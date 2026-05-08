@@ -1,7 +1,7 @@
 import 'package:expanse_tracker/provider/expanse_provider.dart';
 import 'package:expanse_tracker/view/mainpage.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
 void main() async {

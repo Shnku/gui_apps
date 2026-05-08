@@ -1,6 +1,6 @@
 import 'package:expanse_tracker/models/transaction.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart';
 
 class TransactionProvider with ChangeNotifier {
   final _transactionBox = Hive.box('transaction_box');
@@ -23,6 +23,14 @@ class TransactionProvider with ChangeNotifier {
   }
 
   double get totalBalance => totalDeposit - totalWithdraw;
+
+  void saveToDB() {
+    _transactionBox.put("transaction_box", _transaction_list);
+  }
+
+  List<Transaction> getFromDB() {
+    return _transactionBox.get("transaction_box", defaultValue: []);
+  }
 
   void refreshLocalstorage() {
     _transactionBox.clear();
