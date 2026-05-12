@@ -14,6 +14,13 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   @override
+  void initState() {
+    super.initState();
+    final provider = Provider.of<TransactionProvider>(context, listen: false);
+    provider.loadTransactions();
+  }
+
+  @override
   Widget build(BuildContext context) {
     TransactionProvider transactionProvider = Provider.of<TransactionProvider>(
       context,
@@ -24,21 +31,19 @@ class _MainPageState extends State<MainPage> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           MainCard(
-            data: {
-              "icon": Icons.account_balance_wallet,
-              "value": transactionProvider.totalBalance.toStringAsFixed(2),
-              "label": "Total Balance",
-              "change": "+\$200",
-            },
+            value: transactionProvider.totalDeposit,
+            change: transactionProvider.totalBalance,
           ),
           Flexible(
-            child: ListView.builder(
+            child: ListView.separated(
+              padding: const EdgeInsets.all(16),
+              separatorBuilder: (context, index) => const SizedBox(height: 2),
               shrinkWrap: true,
               itemCount: transactionProvider.transaction_list.length,
               itemBuilder: (context, index) => TransactionTile(
                 title: Text(transactionProvider.transaction_list[index].title),
                 subtitle: Text(
-                  "\$${transactionProvider.transaction_list[index].amount.toStringAsFixed(2)}",
+                  "${transactionProvider.transaction_list[index].date}",
                 ),
                 trailing: Text(
                   transactionProvider.transaction_list[index].isDeposit

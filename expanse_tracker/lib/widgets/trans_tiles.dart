@@ -14,11 +14,15 @@ class TransactionTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: CircleAvatar(child: Icon(Icons.attach_money)),
-      title: title,
-      subtitle: subtitle,
-      trailing: trailing,
+    return Card(
+      child: ListTile(
+        leading: CircleAvatar(child: Icon(Icons.attach_money)),
+        title: title,
+        subtitle: subtitle,
+        trailing: trailing,
+        minVerticalPadding: 10,
+        enableFeedback: true,
+      ),
     );
   }
 }

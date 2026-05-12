@@ -25,11 +25,27 @@ class TransactionProvider with ChangeNotifier {
   double get totalBalance => totalDeposit - totalWithdraw;
 
   void saveToDB() {
-    _transactionBox.put("transaction_box", _transaction_list);
+    List<Map<String, dynamic>> data = _transaction_list
+        .map((transactionObject) => transactionObject.toMap())
+        .toList();
+    _transactionBox.put("transaction_box", data);
   }
 
   List<Transaction> getFromDB() {
-    return _transactionBox.get("transaction_box", defaultValue: []);
+    List<dynamic> data = _transactionBox.get(
+      "transaction_box",
+      defaultValue: [],
+    );
+    return data.map((map) {
+      final safeMap = Map<String, dynamic>.from(map as Map);
+      return Transaction.fromMap(safeMap);
+    }).toList();
+  }
+
+  void loadTransactions() {
+    List<Transaction> data = getFromDB();
+    _transaction_list.addAll(data);
+    notifyListeners();
   }
 
   void refreshLocalstorage() {
@@ -38,11 +54,13 @@ class TransactionProvider with ChangeNotifier {
 
   void newTransaction(Transaction transaction) {
     _transaction_list.add(transaction);
+    saveToDB();
     notifyListeners();
   }
 
   void remTransaction(Transaction transaction) {
     _transaction_list.remove(transaction);
+    saveToDB();
     notifyListeners();
   }
 }

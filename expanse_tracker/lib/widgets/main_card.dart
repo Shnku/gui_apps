@@ -1,35 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_m3shapes/flutter_m3shapes.dart';
 
 class MainCard extends StatelessWidget {
-  const MainCard({super.key, required this.data});
+  const MainCard({super.key, required this.value, required this.change});
 
-  final Map<String, dynamic> data;
+  final double value;
+  final double change;
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return Container(
+      width: double.maxFinite,
+      margin: const EdgeInsets.all(16),
       child: Padding(
         padding: const EdgeInsets.all(16),
-        child: Column(
+        child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Icon(data['icon'] as IconData, size: 24),
-            const SizedBox(height: 8),
-            Text(
-              data['value'] as String,
-              style: Theme.of(context).textTheme.titleLarge,
+            M3Container.pill(
+              width: 150,
+              height: 150,
+              color: const Color.fromARGB(255, 76, 40, 134),
+              clipBehavior: Clip.antiAlias,
+              child: Icon(Icons.wallet, size: 90),
+            ),
+            const SizedBox(width: 8),
+            Column(
+              children: [
+                Text(
+                  value.toStringAsFixed(2),
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                Text(
+                  "Current Pocket Money",
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+              ],
             ),
             Text(
-              data['label'] as String,
-              style: Theme.of(context).textTheme.bodySmall,
-            ),
-            Text(
-              data['change'] as String,
+              change.toStringAsFixed(2),
               style: TextStyle(
-                color: (data['change'] as String).startsWith('+')
-                    ? Colors.green
-                    : Colors.red,
+                color: change > 0 ? Colors.green : Colors.red,
                 fontSize: 12,
               ),
             ),

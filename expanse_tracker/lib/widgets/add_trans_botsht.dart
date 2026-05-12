@@ -30,7 +30,7 @@ class _AddTransactionState extends State<AddTransaction> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 TextField(
-                  decoration: const InputDecoration(labelText: 'Label'),
+                  decoration: const InputDecoration(labelText: 'Comment'),
                   controller: t1,
                 ),
                 TextField(
@@ -65,7 +65,7 @@ class _AddTransactionState extends State<AddTransaction> {
                       Transaction(
                         title: t1.text,
                         amount: double.parse(t2.text),
-                        isDeposit: true,
+                        isDeposit: false,
                         date: DateTime.now(),
                         id: DateTime.now().toString(),
                       ),
