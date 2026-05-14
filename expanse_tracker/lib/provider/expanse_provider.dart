@@ -4,17 +4,21 @@ import 'package:hive_ce_flutter/hive_flutter.dart';
 
 class TransactionProvider with ChangeNotifier {
   final _transactionBox = Hive.box('transaction_box');
-  final List<Transaction> _transaction_list = [];
+  final List<Transaction> _transactionList = [];
 
-  List<Transaction> get transaction_list => _transaction_list;
+  TransactionProvider() {
+    loadTransactions();
+  }
 
-  double get totalDeposit => _transaction_list
+  List<Transaction> get transactionList => _transactionList;
+
+  double get totalDeposit => _transactionList
       .where((data) => data.isDeposit)
       .fold(0, (sum, data) => sum + data.amount);
 
   double get totalWithdraw {
     double sum = 0;
-    for (var data in _transaction_list) {
+    for (var data in _transactionList) {
       if (!data.isDeposit) {
         sum += data.amount;
       }
@@ -25,7 +29,7 @@ class TransactionProvider with ChangeNotifier {
   double get totalBalance => totalDeposit - totalWithdraw;
 
   void saveToDB() {
-    List<Map<String, dynamic>> data = _transaction_list
+    List<Map<String, dynamic>> data = _transactionList
         .map((transactionObject) => transactionObject.toMap())
         .toList();
     _transactionBox.put("transaction_box", data);
@@ -44,7 +48,7 @@ class TransactionProvider with ChangeNotifier {
 
   void loadTransactions() {
     List<Transaction> data = getFromDB();
-    _transaction_list.addAll(data);
+    _transactionList.addAll(data);
     notifyListeners();
   }
 
@@ -53,13 +57,13 @@ class TransactionProvider with ChangeNotifier {
   }
 
   void newTransaction(Transaction transaction) {
-    _transaction_list.add(transaction);
+    _transactionList.add(transaction);
     saveToDB();
     notifyListeners();
   }
 
   void remTransaction(Transaction transaction) {
-    _transaction_list.remove(transaction);
+    _transactionList.remove(transaction);
     saveToDB();
     notifyListeners();
   }

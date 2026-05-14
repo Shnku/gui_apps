@@ -3,6 +3,7 @@ import 'package:expanse_tracker/widgets/add_trans_botsht.dart';
 import 'package:expanse_tracker/widgets/main_card.dart';
 import 'package:expanse_tracker/widgets/trans_tiles.dart';
 import 'package:flutter/material.dart';
+import 'package:glassmorphism/glassmorphism.dart';
 import 'package:provider/provider.dart';
 
 class MainPage extends StatefulWidget {
@@ -14,61 +15,91 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   @override
-  void initState() {
-    super.initState();
-    final provider = Provider.of<TransactionProvider>(context, listen: false);
-    provider.loadTransactions();
-  }
-
-  @override
   Widget build(BuildContext context) {
     TransactionProvider transactionProvider = Provider.of<TransactionProvider>(
       context,
     );
-    return Scaffold(
-      appBar: AppBar(title: const Text('Expanse Tracker')),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          MainCard(
-            value: transactionProvider.totalDeposit,
-            change: transactionProvider.totalBalance,
-          ),
-          Flexible(
-            child: ListView.separated(
-              padding: const EdgeInsets.all(16),
-              separatorBuilder: (context, index) => const SizedBox(height: 2),
-              shrinkWrap: true,
-              itemCount: transactionProvider.transaction_list.length,
-              itemBuilder: (context, index) => TransactionTile(
-                title: Text(transactionProvider.transaction_list[index].title),
-                subtitle: Text(
-                  "${transactionProvider.transaction_list[index].date}",
+    return GlassmorphicContainer(
+      width: double.infinity,
+      height: double.infinity,
+      borderRadius: 0,
+      linearGradient: LinearGradient(
+        colors: [
+          const Color.fromARGB(151, 94, 50, 91),
+          const Color.fromARGB(144, 81, 81, 110),
+          const Color.fromARGB(144, 103, 95, 150),
+        ],
+      ),
+      border: 0,
+      blur: 50,
+      borderGradient: LinearGradient(
+        colors: [Colors.transparent, Colors.transparent],
+      ),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          title: const Text('Expanse Tracker'),
+          centerTitle: true,
+          backgroundColor: Colors.transparent,
+        ),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            MainCard(
+              value: transactionProvider.totalDeposit,
+              change: transactionProvider.totalBalance,
+            ),
+            Flexible(
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: Color.fromARGB(117, 14, 12, 12),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30),
+                    topRight: Radius.circular(30),
+                  ),
                 ),
-                trailing: Text(
-                  transactionProvider.transaction_list[index].isDeposit
-                      ? '+\$${transactionProvider.transaction_list[index].amount.toStringAsFixed(2)}'
-                      : '-\$${transactionProvider.transaction_list[index].amount.toStringAsFixed(2)}',
-                  style: TextStyle(
-                    color: transactionProvider.transaction_list[index].isDeposit
-                        ? Colors.green
-                        : Colors.red,
+                height: double.infinity,
+                child: ListView.separated(
+                  padding: const EdgeInsets.all(16),
+                  separatorBuilder: (context, index) =>
+                      const SizedBox(height: 2),
+                  shrinkWrap: true,
+                  itemCount: transactionProvider.transactionList.length,
+                  itemBuilder: (context, index) => TransactionTile(
+                    comment: Text(
+                      transactionProvider.transactionList[index].title,
+                    ),
+                    date: Text(
+                      "${transactionProvider.transactionList[index].date}",
+                    ),
+                    amount: Text(
+                      transactionProvider.transactionList[index].isDeposit
+                          ? '+\$${transactionProvider.transactionList[index].amount.toStringAsFixed(2)}'
+                          : '-\$${transactionProvider.transactionList[index].amount.toStringAsFixed(2)}',
+                      style: TextStyle(
+                        color:
+                            transactionProvider.transactionList[index].isDeposit
+                            ? Colors.green
+                            : Colors.red,
+                      ),
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-          const Center(child: Text('Hello World')),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton.large(
-        onPressed: () {
-          showModalBottomSheet(
-            context: context,
-            builder: (context) => const AddTransaction(),
-          );
-        },
-        child: const Icon(Icons.add),
+            const Center(child: Text('Hello, Add your transactions!')),
+          ],
+        ),
+        floatingActionButton: FloatingActionButton.large(
+          onPressed: () {
+            showModalBottomSheet(
+              context: context,
+              backgroundColor: Colors.transparent,
+              builder: (context) => AddTransaction(),
+            );
+          },
+          child: const Icon(Icons.add),
+        ),
       ),
     );
   }
