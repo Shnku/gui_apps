@@ -33,10 +33,14 @@ class TransactionTile extends StatelessWidget {
       borderGradient: LinearGradient(colors: [Colors.black, Colors.black]),
       child: ListTile(
         leading: amount,
-        title: SizedBox(width: 60, child: comment),
+        title: Padding(
+          padding: EdgeInsets.only(bottom: 3.0, left: 40),
+          child: comment,
+        ),
         trailing: date,
         // subtitle: comment,
-        minVerticalPadding: 10,
+        minVerticalPadding: 20,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 20),
         enableFeedback: true,
       ),
     );

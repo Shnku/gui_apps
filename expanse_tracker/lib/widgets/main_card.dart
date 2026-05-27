@@ -1,3 +1,4 @@
+import 'package:expanse_tracker/widgets/add_trans_botsht.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_m3shapes/flutter_m3shapes.dart';
 
@@ -19,12 +20,18 @@ class MainCard extends StatelessWidget {
             width: 150,
             height: 150,
             color: const Color.fromARGB(255, 76, 40, 134),
-            child: Icon(Icons.wallet, size: 90),
+            child: IconButton(
+              onPressed: () => showModalBottomSheet(
+                context: context,
+                builder: (context) => AddTransaction(isDeposit: true),
+              ),
+              icon: Icon(Icons.wallet, size: 70),
+            ),
           ),
           Column(
             children: [
               Text(
-                value.toStringAsFixed(2),
+                change.toStringAsFixed(2),
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               Text(
@@ -34,7 +41,7 @@ class MainCard extends StatelessWidget {
             ],
           ),
           Text(
-            change.toStringAsFixed(2),
+            value.toStringAsFixed(2),
             style: TextStyle(
               color: change > 0 ? Colors.green : Colors.red,
               fontSize: 12,

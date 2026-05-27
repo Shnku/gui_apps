@@ -5,7 +5,8 @@ import 'package:glassmorphism/glassmorphism.dart';
 import 'package:provider/provider.dart';
 
 class AddTransaction extends StatefulWidget {
-  const AddTransaction({super.key});
+  const AddTransaction({super.key, this.isDeposit = false});
+  final bool? isDeposit;
 
   @override
   State<AddTransaction> createState() => _AddTransactionState();
@@ -21,16 +22,18 @@ class _AddTransactionState extends State<AddTransaction> {
     );
     return GlassmorphicContainer(
       width: double.infinity,
-      height: 550,
+      height: 500,
       borderRadius: 20,
       linearGradient: LinearGradient(
         colors: [
-          const Color.fromARGB(158, 37, 53, 59),
-          const Color.fromARGB(144, 53, 41, 122),
+          const Color.fromARGB(169, 39, 31, 54),
+          const Color.fromARGB(144, 49, 28, 58),
         ],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
       ),
       border: 0,
-      blur: 12,
+      blur: 40,
       borderGradient: LinearGradient(
         colors: [
           const Color.fromARGB(74, 29, 29, 29),
@@ -78,8 +81,8 @@ class _AddTransactionState extends State<AddTransaction> {
                 transactionProvider.newTransaction(
                   Transaction(
                     title: t1.text,
-                    amount: double.parse(t2.text),
-                    isDeposit: false,
+                    amount: double.tryParse(t2.text) ?? 0,
+                    isDeposit: widget.isDeposit as bool,
                     date: DateTime.now(),
                     id: DateTime.now().toString(),
                   ),
