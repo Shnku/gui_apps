@@ -41,6 +41,8 @@ class _MainPageState extends State<MainPage> {
           title: const Text('Expanse Tracker'),
           centerTitle: true,
           backgroundColor: Colors.transparent,
+          surfaceTintColor: Colors.transparent,
+          shadowColor: Colors.transparent,
         ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -87,7 +89,6 @@ class _MainPageState extends State<MainPage> {
                 ),
               ),
             ),
-            const Center(child: Text('Hello, Add your transactions!')),
           ],
         ),
         floatingActionButton: FloatingActionButton.large(
@@ -99,6 +100,40 @@ class _MainPageState extends State<MainPage> {
             );
           },
           child: const Icon(Icons.add),
+        ),
+        drawer: Drawer(
+          backgroundColor: Colors.transparent,
+          child: GlassmorphicContainer(
+            width: double.maxFinite,
+            height: double.maxFinite,
+            borderRadius: 20,
+            borderGradient: LinearGradient(
+              colors: [
+                const Color.fromARGB(0, 70, 66, 66),
+                const Color.fromARGB(255, 71, 40, 119),
+                const Color.fromARGB(169, 59, 58, 58),
+              ],
+            ),
+            linearGradient: LinearGradient(
+              colors: [
+                const Color.fromARGB(255, 41, 24, 40),
+                // const Color.fromARGB(255, 36, 34, 39),
+                const Color.fromARGB(255, 28, 25, 48),
+              ],
+              transform: const GradientRotation(0.5),
+            ),
+            border: 1,
+            blur: 100,
+
+            child: ListView(
+              padding: EdgeInsets.zero,
+              children: [
+                DrawerHeader(child: const Text('Drawer Header')),
+                const ListTile(title: Text('Item 1')),
+                const ListTile(title: Text('Item 2')),
+              ],
+            ),
+          ),
         ),
       ),
     );
